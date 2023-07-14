@@ -1,8 +1,6 @@
 const mysql = require('mysql')
 
 class database {
-    pool: any
-
     constructor() {
         this.pool = mysql.createPool({
             connectionLimit : 10,
@@ -13,7 +11,7 @@ class database {
         });
     }
 
-    query(queryString: String, options: String[]) {
+    query(queryString, options) {
         return new Promise<any>((res, rej) => {
             this.pool.query(queryString, options, (err, result) => {
                 if (err) return rej(err)

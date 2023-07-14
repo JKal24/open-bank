@@ -2,17 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const http = require('http');
-const socketio = require('socket.io');
 const routes = require('./routes');
 const path = require('path');
+const { getLinkToken } = require('./data/api')
 
 app.use(cors());
 app.use(express.json());
 
 app.use(routes);
-
-const server = http.createServer(app)
 
 if (process.env.MODE === "production") {
     app.use(express.static(path.join(__dirname, '../client/build')));
@@ -41,3 +38,5 @@ function cleanUp(options, exitCode) {
     if (exitCode || exitCode === 0) console.log(exitCode);
     process.exit();
 }
+
+getLinkToken().then(res => console.log(res))
