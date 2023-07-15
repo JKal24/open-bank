@@ -1,0 +1,7 @@
+CREATE DATABASE openbank;
+
+CREATE TABLE users(
+    user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255),
+    pass VARCHAR(255)
+);

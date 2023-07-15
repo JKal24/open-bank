@@ -4,19 +4,16 @@ class database {
     constructor() {
         this.pool = mysql.createPool({
             connectionLimit : 10,
-            host     : 'localhost',
+            host     : 'localhost:3306',
             user     : 'root',
             password : 'root',
             database : 'openbank'
         });
     }
 
-    query(queryString, options) {
-        return new Promise<any>((res, rej) => {
-            this.pool.query(queryString, options, (err, result) => {
-                if (err) return rej(err)
-                res(result)
-            })
+    async query(queryString, options) {
+        await this.pool.query(queryString, options, (err, result) => {
+            return result;
         })
     }
 

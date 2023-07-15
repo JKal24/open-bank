@@ -4,7 +4,7 @@ const app = express();
 const cors = require('cors');
 const routes = require('./routes');
 const path = require('path');
-const { getAccessToken, getAccountBalance } = require('./data/api')
+const pool = require('./data/database')
 
 app.use(cors());
 app.use(express.json());
@@ -39,4 +39,9 @@ function cleanUp(options, exitCode) {
     process.exit();
 }
 
-getAccountBalance()
+async function testQuery() {
+    const db = new database();
+    db.query("SELECT * FROM users", []).then(result => console.log(result))
+}
+
+testQuery();
