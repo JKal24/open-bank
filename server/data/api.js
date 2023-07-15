@@ -1,10 +1,11 @@
-const { Configuration, PlaidApi, Products, PlaidEnvironments} = require('plaid');
+const { Configuration, PlaidApi, Products, PlaidEnvironments } = require('plaid');
 
 const ENV = process.env.PLAID_ENV || "sandbox"
 const CLIENT_ID = process.env.PLAID_CLIENT_ID
 const SECRET = process.env.PLAID_SECRET
 const PRODUCTS = (process.env.PLAID_PRODUCTS || "auth,transactions").split(",")
 const COUNTRY_CODES = (process.env.PLAID_COUNTRY_CODES || "US,CA").split(",")
+const USER_ID = process.env.PLAID_USER || "user_good"
 
 const config = new Configuration({
     basePath: PlaidEnvironments[ENV],
@@ -26,11 +27,11 @@ let TRANSFER_ID = null;
 
 async function getLinkToken() {
     try {
-        const request = {
+        const publicTokenRequest = {
             user: {
-                client_user_id: CLIENT_ID,
+                client_user_id: USER_ID,
             },
-            client_name: 'Bank1',
+            client_name: USER_ID,
             products: PRODUCTS,
             country_codes: COUNTRY_CODES,
             language: 'en',
@@ -41,18 +42,39 @@ async function getLinkToken() {
             },
         };
     
-        const tokenResponse = await client.linkTokenCreate(request)
-        return tokenResponse.data.link_token
+        const tokenResponse = await client.linkTokenCreate(publicTokenRequest)
+        const publicToken = tokenResponse.data.link_token
+
+        const accessTokenRequest = {
+            public_token: publicToken,
+        };
+        const response = await client.itemPublicTokenExchange(accessTokenRequest);
+        return response.data.access_token;
     } catch (err) {
         console.log(err)
     }
-    
 }
 
-async function postRequest(request, args) {
-    const linkToken = getLinkToken()
-
-
+async function getAccessToken(publicToken) {
+    const accessTokenRequest = {
+        public_token: publicToken,
+    };
+    const response = await client.itemPublicTokenExchange(accessTokenRequest);
+    return response.data.access_token;
 }
 
-module.exports = { getLinkToken }
+async function getAccountBalance() {
+    const accessToken = getAccessToken()
+
+    const request = {
+        access_token: accessToken,
+    };
+    try {
+        const response = await client.accountsBalanceGet(request);
+        return response.data.accounts;
+    } catch (error) {
+
+    }
+}
+
+module.exports = { getAccessToken, getAccountBalance }

@@ -4,7 +4,7 @@ const app = express();
 const cors = require('cors');
 const routes = require('./routes');
 const path = require('path');
-const { getLinkToken } = require('./data/api')
+const { getAccessToken, getAccountBalance } = require('./data/api')
 
 app.use(cors());
 app.use(express.json());
@@ -39,4 +39,4 @@ function cleanUp(options, exitCode) {
     process.exit();
 }
 
-getLinkToken().then(res => console.log(res))
+getAccountBalance()
