@@ -1,0 +1,16 @@
+.login-container {
+    position: relative;
+}
+
+.background-image {
+    height: inherit;
+    width: 80%;
+    padding-left: 10%;
+}
+
+
+.login-form {
+    position: absolute;
+    bottom: 50%;
+    background-color: whitesmoke;
+}

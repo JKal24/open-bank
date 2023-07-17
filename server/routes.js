@@ -1,4 +1,8 @@
 const express = require('express');
-const expressRoutes = express.Router();
+const routes = express.Router();
 
-module.exports = expressRoutes
+const plaidHandler = require('./controllers/plaid');
+
+routes.get('/GetLinkToken', plaidHandler.sendLinkToken);
+
+module.exports = routes

@@ -27,7 +27,7 @@ let TRANSFER_ID = null;
 
 async function getLinkToken() {
     try {
-        const publicTokenRequest = {
+        const linkTokenRequest = {
             user: {
                 client_user_id: USER_ID,
             },
@@ -42,14 +42,14 @@ async function getLinkToken() {
             },
         };
     
-        const tokenResponse = await client.linkTokenCreate(publicTokenRequest)
-        const publicToken = tokenResponse.data.link_token
+        const tokenResponse = await client.linkTokenCreate(linkTokenRequest)
+        return tokenResponse.data.link_token
 
-        const accessTokenRequest = {
-            public_token: publicToken,
-        };
-        const response = await client.itemPublicTokenExchange(accessTokenRequest);
-        return response.data.access_token;
+        // const accessTokenRequest = {
+        //     public_token: publicToken,
+        // };
+        // const response = await client.itemPublicTokenExchange(accessTokenRequest);
+        // return response.data.access_token;
     } catch (err) {
         console.log(err)
     }
@@ -77,4 +77,4 @@ async function getAccountBalance() {
     }
 }
 
-module.exports = { getAccessToken, getAccountBalance }
+module.exports = { getLinkToken, getAccessToken, getAccountBalance }

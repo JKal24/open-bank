@@ -4,7 +4,7 @@ const app = express();
 const cors = require('cors');
 const routes = require('./routes');
 const path = require('path');
-const pool = require('./data/database')
+const db = require('./data/database')
 
 app.use(cors());
 app.use(express.json());
@@ -38,10 +38,3 @@ function cleanUp(options, exitCode) {
     if (exitCode || exitCode === 0) console.log(exitCode);
     process.exit();
 }
-
-async function testQuery() {
-    const db = new database();
-    db.query("SELECT * FROM users", []).then(result => console.log(result))
-}
-
-testQuery();
