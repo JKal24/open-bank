@@ -1,6 +1,3 @@
-import React, { useState } from 'react';
-import '../../spreadsheets/marginals.css';
-
 export default function Header() {
     return (
         <div className='header'>

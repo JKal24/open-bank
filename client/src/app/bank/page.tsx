@@ -1,21 +1,20 @@
-import React, { useCallback, useState, useEffect } from 'react';
+'use client'
+
+import { useState, useEffect } from 'react';
 import {
-  usePlaidLink,
-  PlaidLinkOnSuccess,
-  PlaidLinkOnEvent,
-  PlaidLinkOnExit,
-  PlaidLinkOptions,
+    usePlaidLink
 } from 'react-plaid-link';
-import { getLinkToken } from '../../data/plaid';
 
 export default function Dashboard() {
 
-    const [linkToken, setLinkToken] = useState(null);
+    const [linkToken, setLinkToken] = useState<string|null>(null);
 
     useEffect(() => {
         const createLinkToken = async () => {
-            const tokenResponse = await getLinkToken();
-            setLinkToken(tokenResponse);
+            const tokenResponse = await fetch('http://localhost:5000/GetLinkToken');
+            const response = await tokenResponse.json();
+            console.log(response);
+            setLinkToken(response);
         }
         createLinkToken();
     }, []);

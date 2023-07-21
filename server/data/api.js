@@ -20,11 +20,6 @@ const config = new Configuration({
 
 const client = new PlaidApi(config);
 
-let ACCESS_TOKEN = null;
-let ITEM_ID = null;
-let PAYMENT_ID = null;
-let TRANSFER_ID = null;
-
 async function getLinkToken() {
     try {
         const linkTokenRequest = {
@@ -44,12 +39,7 @@ async function getLinkToken() {
     
         const tokenResponse = await client.linkTokenCreate(linkTokenRequest)
         return tokenResponse.data.link_token
-
-        // const accessTokenRequest = {
-        //     public_token: publicToken,
-        // };
-        // const response = await client.itemPublicTokenExchange(accessTokenRequest);
-        // return response.data.access_token;
+        
     } catch (err) {
         console.log(err)
     }
@@ -63,8 +53,8 @@ async function getAccessToken(publicToken) {
     return response.data.access_token;
 }
 
-async function getAccountBalance() {
-    const accessToken = getAccessToken()
+async function getAccountBalance(publicToken) {
+    const accessToken = getAccessToken(publicToken)
 
     const request = {
         access_token: accessToken,
