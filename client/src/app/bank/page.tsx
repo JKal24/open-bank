@@ -11,8 +11,9 @@ export default function Dashboard() {
 
     useEffect(() => {
         const createLinkToken = async () => {
-            const tokenResponse = await fetch('http://localhost:5000/GetLinkToken');
-            const response = await tokenResponse.json();
+            // const tokenResponse = await fetch('http://localhost:5000/GetLinkToken');
+            // const response = await tokenResponse.json();
+            const response = "xd";
             setLinkToken(response);
         }
         createLinkToken();
@@ -26,10 +27,10 @@ export default function Dashboard() {
     });
     
     return (
-        <div >
+        <main>
             <button onClick={ () => open() }  disabled={!ready}>
                 Add Account
             </button>
-        </div>
+        </main>
     );
 }

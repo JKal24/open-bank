@@ -1,10 +1,10 @@
-module.exports = {
-    async sendLinkToken(req, res) {
-        const linkToken = await getLinkToken();
-        res.json(linkToken);
-    },
+import { getLinkToken } from '../services/token'
 
-    async getExistingAccessToken(req, res) {
-        
-    }
+export async function sendLinkToken(req, res) {
+    const linkToken = await getLinkToken();
+    res.json(linkToken);
+}
+
+export async function getExistingAccessToken(req, res) {
+    
 }

@@ -1,4 +1,4 @@
-const { Configuration, PlaidApi, Products, PlaidEnvironments } = require('plaid');
+import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
 
 const ENV = process.env.PLAID_ENV || "sandbox"
 const CLIENT_ID = process.env.PLAID_CLIENT_ID
@@ -17,4 +17,4 @@ const config = new Configuration({
 
 const client = new PlaidApi(config);
 
-module.exports = { client };
+export default client;

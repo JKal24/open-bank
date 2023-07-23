@@ -1,5 +1,21 @@
 {
     "compilerOptions": {
-        "types": ["node"]
-    }
-}
+      "target": "es6",
+      "module": "commonjs",
+      "outDir": "dist/",
+      "sourceMap": true,
+      "types": ["node"]
+    },
+    "files": [
+      "./node_modules/@types/node/index.d.ts",
+      "./node_modules/@types/express/index.d.ts",
+      "./node_modules/@types/express-session/index.d.ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "typings/*",
+      "node_modules"
+    ]
+  }

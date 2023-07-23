@@ -6,6 +6,6 @@ module.exports = {
     },
 
     async checkUserExists(req, res) {
-        const dbResponse = await query('')
+        const dbResponse = await db.query('')
     }
 }
