@@ -5,7 +5,7 @@ import express from 'express';
 const app = express();
 
 import cors from 'cors';
-import routes from './routes'
+import routes from './routes.js'
 
 app.use(cors());
 app.use(express.json());

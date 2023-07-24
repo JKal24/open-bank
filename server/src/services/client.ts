@@ -1,4 +1,4 @@
-import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
+import { Configuration, PlaidApi, PlaidEnvironments, AccountsGetRequest, TransactionsGetRequest } from 'plaid';
 
 const ENV = process.env.PLAID_ENV || "sandbox"
 const CLIENT_ID = process.env.PLAID_CLIENT_ID
@@ -15,6 +15,4 @@ const config = new Configuration({
     },
 });
 
-const client = new PlaidApi(config);
-
-export default client;
+export const client = new PlaidApi(config);

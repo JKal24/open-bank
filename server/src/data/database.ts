@@ -1,4 +1,4 @@
-const mysql = require('mysql')
+import * as mysql from 'mysql';
 
 var database = mysql.createPool({
     connectionLimit : 10,
@@ -8,4 +8,4 @@ var database = mysql.createPool({
     database : 'openbank'
 });
 
-module.exports = database
+export default database;

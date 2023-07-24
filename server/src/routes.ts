@@ -1,11 +1,11 @@
 import { Router } from 'express';
 const router = Router()
 
-const tokenHandler = require('./controllers/token');
+import {sendLinkToken, getExistingAccessToken} from './controllers/token.js'
 // const accountHandler;
 
-router.get('/GetLinkToken', tokenHandler.sendLinkToken);
-router.get('/AccessToken', tokenHandler.getExistingAccessToken);
+router.get('/GetLinkToken', sendLinkToken);
+router.get('/AccessToken', getExistingAccessToken);
 // routes.get('/Accounts', accountHandler.getAccounts);
 // routes.get('/Balance', balanceHandler.getAccountBalance);
 // routes.get('/Bank', bankHandler.getBank);

@@ -1,11 +1,9 @@
-import { CountryCode, Products, DepositoryAccountSubtype, AccountsBalanceGetRequest } from 'plaid/dist/api'
-import client from './client'
-
+import { CountryCode, Products, DepositoryAccountSubtype } from 'plaid';
+import { client } from './client.js';
 const PRODUCTS = [Products.Auth, Products.Transactions];
-const COUNTRY_CODES: CountryCode[] = [CountryCode.Ca, CountryCode.Us];
+const COUNTRY_CODES = [CountryCode.Ca, CountryCode.Us];
 const ACCOUNT_SUBTYPES = [DepositoryAccountSubtype.Checking, DepositoryAccountSubtype.Savings];
-const USER_ID = process.env.PLAID_USER || "user_good"
-
+const USER_ID = process.env.PLAID_USER || "user_good";
 export async function getLinkToken() {
     try {
         const linkTokenRequest = {
@@ -22,15 +20,13 @@ export async function getLinkToken() {
                 },
             },
         };
-    
-        const tokenResponse = await client.linkTokenCreate(linkTokenRequest)
-        return tokenResponse.data.link_token
-        
-    } catch (err) {
-        console.log(err)
+        const tokenResponse = await client.linkTokenCreate(linkTokenRequest);
+        return tokenResponse.data.link_token;
+    }
+    catch (err) {
+        console.log(err);
     }
 }
-
 export async function getAccessToken(publicToken) {
     const accessTokenRequest = {
         public_token: publicToken,
@@ -38,17 +34,4 @@ export async function getAccessToken(publicToken) {
     const response = await client.itemPublicTokenExchange(accessTokenRequest);
     return response.data.access_token;
 }
-
-export async function getAccountBalance(publicToken) {
-    const accessToken = await getAccessToken(publicToken)
-
-    const request:AccountsBalanceGetRequest = {
-        access_token: accessToken,
-    };
-    try {
-        const response = await client.accountsBalanceGet(request);
-        return response.data.accounts;
-    } catch (error) {
-
-    }
-}
+//# sourceMappingURL=token.js.map
