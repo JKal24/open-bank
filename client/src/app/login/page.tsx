@@ -18,25 +18,25 @@ export default function Login() {
                 <img className='left-10% z-[-4] absolute' src={joinUsToday.src}/>
                 <img className='right-10% w-[15rem] h-[20rem] z-[-4] absolute' src={business1.src}/>
                 {signUp ? 
-                        <form className="flex flex-col bg-white p-4 w-fit">
-                            <div>Sample Card</div>
-                            <label className="block text-center" htmlFor="register-email">Email address</label>
-                            <input type="email" name="register-email" placeholder="Enter email" onChange={ e => setEmail(e.target.value) }/>
+                    <form className="flex flex-col bg-white p-4 w-fit">
+                        <div>Sample Card</div>
+                        <label className="block text-center" htmlFor="register-email">Email address</label>
+                        <input type="email" name="register-email" placeholder="Enter email" onChange={ e => setEmail(e.target.value) }/>
 
-                            <label className="block text-center" htmlFor="register-password">Email address</label>
-                            <input type="password" name="register-password" placeholder="Enter password" onChange={ e => setEmail(e.target.value) }/>
-                            <button className="pt-2">Register</button>
-                        </form>
+                        <label className="block text-center" htmlFor="register-password">Email address</label>
+                        <input type="password" name="register-password" placeholder="Enter password" onChange={ e => setEmail(e.target.value) }/>
+                        <button className="pt-2">Register</button>
+                    </form>
                 :
-                <form className="flex flex-col bg-white p-4 w-fit">
-                    <div>Sample Card</div>
-                    <label className="block text-center" htmlFor="register-email">Email address</label>
-                    <input type="email" name="register-email" placeholder="Enter email" onChange={ e => setEmail(e.target.value) }/>
+                    <form className="flex flex-col bg-white p-4 w-fit">
+                        <div>Sample Card</div>
+                        <label className="block text-center" htmlFor="register-email">Email address</label>
+                        <input type="email" name="register-email" placeholder="Enter email" onChange={ e => setEmail(e.target.value) }/>
 
-                    <label className="block text-center" htmlFor="register-password">Email address</label>
-                    <input type="password" name="register-password" placeholder="Enter password" onChange={ e => setEmail(e.target.value) }/>
-                    <button className="pt-2">Login</button>
-                </form>
+                        <label className="block text-center" htmlFor="register-password">Email address</label>
+                        <input type="password" name="register-password" placeholder="Enter password" onChange={ e => setEmail(e.target.value) }/>
+                        <button className="pt-2">Login</button>
+                    </form>
                 }
             </div>
         </div>

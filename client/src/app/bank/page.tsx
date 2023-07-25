@@ -1,5 +1,6 @@
 'use client'
 
+import SearchBar from '@/components/search-bar';
 import { useState, useEffect } from 'react';
 import {
     usePlaidLink
@@ -27,10 +28,11 @@ export default function Dashboard() {
     });
     
     return (
-        <main>
+        <div>
+            <SearchBar />
             <button onClick={ () => open() }  disabled={!ready}>
                 Add Account
             </button>
-        </main>
+        </div>
     );
 }
