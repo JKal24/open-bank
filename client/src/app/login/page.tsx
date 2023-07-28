@@ -24,7 +24,7 @@ export default function Login() {
                         <input type="email" name="register-email" placeholder="Enter email" onChange={ e => setEmail(e.target.value) }/>
 
                         <label className="block text-center" htmlFor="register-password">Email address</label>
-                        <input type="password" name="register-password" placeholder="Enter password" onChange={ e => setEmail(e.target.value) }/>
+                        <input type="password" name="register-password" placeholder="Enter password" onChange={ e => setPassword(e.target.value) }/>
                         <button className="pt-2">Register</button>
                     </form>
                 :
@@ -34,7 +34,7 @@ export default function Login() {
                         <input type="email" name="register-email" placeholder="Enter email" onChange={ e => setEmail(e.target.value) }/>
 
                         <label className="block text-center" htmlFor="register-password">Email address</label>
-                        <input type="password" name="register-password" placeholder="Enter password" onChange={ e => setEmail(e.target.value) }/>
+                        <input type="password" name="register-password" placeholder="Enter password" onChange={ e => setPassword(e.target.value) }/>
                         <button className="pt-2">Login</button>
                     </form>
                 }

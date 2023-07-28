@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 
@@ -12,8 +14,8 @@ export default function SearchBar() {
     }
 
     return (
-        <div className="w-100%">
-            <input type="text" placeholder="Search..." onKeyUp={handleSearch}/>
+        <div className="w-100% bg-slate-100">
+            <input className="bg-slate-200" type="text" placeholder="Search..." onKeyUp={handleSearch}/>
         </div>
     )
 

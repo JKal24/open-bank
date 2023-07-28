@@ -1,6 +1,9 @@
 import { CountryCode, Products, DepositoryAccountSubtype, AccountsBalanceGetRequest } from 'plaid'
 import { client } from './client.js'
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 const PRODUCTS = [Products.Auth, Products.Transactions];
 const COUNTRY_CODES: CountryCode[] = [CountryCode.Ca, CountryCode.Us];
 const ACCOUNT_SUBTYPES = [DepositoryAccountSubtype.Checking, DepositoryAccountSubtype.Savings];
@@ -27,11 +30,11 @@ export async function getLinkToken() {
         return tokenResponse.data.link_token
         
     } catch (err) {
-        console.log(err)
+        return err;
     }
 }
 
-export async function getAccessToken(publicToken) {
+export async function getAccessToken(publicToken: string) {
     const accessTokenRequest = {
         public_token: publicToken,
     };

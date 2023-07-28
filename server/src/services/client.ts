@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { Configuration, PlaidApi, PlaidEnvironments, AccountsGetRequest, TransactionsGetRequest } from 'plaid';
 
 const ENV = process.env.PLAID_ENV || "sandbox"
