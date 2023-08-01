@@ -18,7 +18,6 @@ export default function Dashboard() {
             const tokenResponse = await fetch('http://localhost:5000/GetLinkToken');
             const response = await tokenResponse.json();
             setLinkToken(response);
-            
         }
         createLinkToken();
     }, []);
@@ -26,16 +25,16 @@ export default function Dashboard() {
     const { open, ready } = usePlaidLink({
         token: linkToken,
         onSuccess: async (publicToken, metadata) => {
-            const getAccessToken = await fetch('http://localhost:5000/GetAccessToken', {
+            const accessTokenRequest = await fetch('http://localhost:5000/GetAccessToken', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(publicToken)
+                body: JSON.stringify({publicToken})
             });
 
-            const newAccessToken = await getAccessToken.json();
+            const newAccessToken = await accessTokenRequest.json();
 
             const accounts: AccountInfo[] = metadata.accounts.map(plaidAccount => {
                 const accountInfo: AccountInfo = {
@@ -56,6 +55,15 @@ export default function Dashboard() {
             }
 
             addAccount(userAccount);
+
+            await fetch('http://localhost:5000/AddAccount', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userAccount)
+            });
         },
     });
     

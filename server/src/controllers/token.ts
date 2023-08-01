@@ -1,17 +1,30 @@
+import { Request, Response, NextFunction } from 'express';
 import { getLinkToken, getAccessToken } from '../services/token.js'
 
-export async function sendLinkToken(req, res) {
-    const linkToken = await getLinkToken();
-    res.json(linkToken);
+export async function sendLinkToken(req: Request, res: Response, next: NextFunction) {
+    try {
+        const linkToken = await getLinkToken();
+        console.log(linkToken);
+        res.json(linkToken);
+    } catch (err) {
+        next(err);
+    }
 }
 
-export async function sendAccessToken(req, res) {
-    console.log(req.body);
-    const accessToken = await getAccessToken(req.body);
-    console.log(accessToken);
-    res.json(accessToken);
+export async function sendAccessToken(req: Request, res: Response, next: NextFunction) {
+    try {
+        const publicToken: string = Object.values<string>(req.body)[0];
+        const accessToken = await getAccessToken(publicToken);
+        res.json(accessToken);
+    } catch (err) {
+        next(err);
+    }
 }
 
-export async function getExistingAccessToken(req, res) {
+export async function getExistingAccessToken(req: Request, res: Response, next: NextFunction) {
+    try {
     
+    } catch (err) {
+        next(err);
+    }
 }
