@@ -1,11 +1,12 @@
-import { getAccount, getTransactions, getBalances, addNewUserAccount } from '../services/accounts.js'
-import { AccountInfo, UserAccountInfo } from '../types/account.js';
+import { getAccount, getTransactions, getBalances, addNewUserAccount } from '../services/bank.js'
+import { AccountInfo, UserAccountInfo } from '../types/plaid.js';
 
 export async function addNewAccount(req, res, next) {
     try {
-        const userAccountInfo: UserAccountInfo = req.body;
+        const user_id: string = req.body.id;
+        const userAccountInfo: UserAccountInfo = req.body.info;
 
-        addNewUserAccount(userAccountInfo);
+        addNewUserAccount(userAccountInfo, user_id);
     } catch (err) {
         next(err);
     }

@@ -1,4 +1,4 @@
-import db from '../data/database.js';
+import db from '../../data/database.js';
 
 export function addUserDb(email: string, password: string) {
     try {

@@ -8,17 +8,16 @@ export interface Item {
     item_id: string,
     access_token: string,
     user_id: string,
-    institution_id: string
+    institution_id: string,
+    institution_name: string
 }
 
 export interface Account {
     account_id: string,
-    user_id: string,
-    institution_id: string,
-    institution_name: string,
+    item_id: string,
     account_type: string,
-    accountSubtype: string,
-    accountMask: string,
+    account_subtype: string,
+    account_mask: string,
     balance: number
 }
 
@@ -32,9 +31,4 @@ export interface Transaction {
     payment_channel: string,
     currency_code: string,
     transaction_type: string
-}
-
-export interface TransactionCategory {
-    category: string,
-    transaction_id: string,
 }

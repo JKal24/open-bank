@@ -1,5 +1,5 @@
 import { validate } from 'jsonschema';
-import { addUserDb, checkUserExistsDb } from '../services/user.js';
+import { addUserDb, checkUserExistsDb } from '../services/db/user.js';
 
 export function addUser(req, res) {
     addUserDb(req.params.email, req.params.pass);

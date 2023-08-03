@@ -4,8 +4,8 @@ import { client } from './client.js'
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-const PRODUCTS = [Products.Auth, Products.Transactions];
 const COUNTRY_CODES: CountryCode[] = [CountryCode.Ca, CountryCode.Us];
+const PRODUCTS = [Products.Auth, Products.Transactions];
 const ACCOUNT_SUBTYPES = [DepositoryAccountSubtype.Checking, DepositoryAccountSubtype.Savings];
 const USER_ID = process.env.PLAID_USER || "user_good"
 
