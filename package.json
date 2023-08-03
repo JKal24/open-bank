@@ -1,0 +1,19 @@
+{
+  "name": "open-bank",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/JKal24/open-bank.git",
+  "author": "JKal24 <jkalirai2499@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "lerna run --parallel dev"
+  },
+  "devDependencies": {
+    "lerna": "^7.1.4",
+    "typescript": "^5.1.6"
+  }
+}
