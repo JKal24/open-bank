@@ -2,7 +2,7 @@ import { Router } from 'express';
 const router = Router()
 
 import { sendLinkToken, getExistingAccessToken, sendAccessToken } from './controllers/token.js'
-import { addUser, getUser } from './controllers/user.js';
+import { addUser } from './controllers/user.js';
 import { addNewAccount } from './controllers/accounts.js';
 
 router.get('/GetLinkToken', sendLinkToken);

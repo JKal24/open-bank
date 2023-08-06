@@ -1,8 +1,9 @@
-import { addNewUserAccount } from '../services/accounts.js';
+import { addNewUserAccount } from '../services/bank.js';
 export async function addNewAccount(req, res, next) {
     try {
-        const userAccountInfo = req.body;
-        addNewUserAccount(userAccountInfo);
+        const user_id = req.body.id;
+        const userAccountInfo = req.body.info;
+        addNewUserAccount(userAccountInfo, user_id);
     }
     catch (err) {
         next(err);

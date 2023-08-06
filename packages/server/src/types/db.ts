@@ -7,7 +7,7 @@ export interface User {
 export interface Item {
     item_id: string,
     access_token: string,
-    user_id: string,
+    email: string,
     institution_id: string,
     institution_name: string
 }
