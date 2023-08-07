@@ -10,14 +10,14 @@ export async function getTransactions(access_token, startDate, endDate) {
 export async function getBalances(access_token) {
     return await client.accountsBalanceGet({ access_token });
 }
-export async function addNewUserAccount(userAccountInfo, user_id) {
+export async function addNewUserAccount(userAccountInfo, email) {
     const endDate = getDate(0);
     const startDate = getDate(30);
     const transactionInfo = await getTransactions(userAccountInfo.accessToken, startDate, endDate);
     const institution_id = userAccountInfo.institution_id;
     const transactionItem = transactionInfo.data.item;
     const item = {
-        user_id,
+        email,
         item_id: transactionItem.item_id,
         access_token: userAccountInfo.accessToken,
         institution_id,
@@ -50,18 +50,4 @@ export async function addNewUserAccount(userAccountInfo, user_id) {
         addTransactionToDB(transaction);
     });
 }
-export function addUserAccount() {
-}
-// function convertAccountInfo(accountBase: AccountBase, item: Item, user_id: string): Account {
-// return {
-//     account_id: accountBase.account_id,
-//     user_id,
-//     institution_id: item.institution_id,
-//     institution_name: string,
-//     account_type: string,
-//     accountSubtype: string,
-//     accountMask: string,
-//     balance: number
-// }
-// }
 //# sourceMappingURL=bank.js.map

@@ -22,7 +22,7 @@ export async function sendAccessToken(req: Request, res: Response, next: NextFun
 
 export async function getExistingAccessToken(req: Request, res: Response, next: NextFunction) {
     try {
-    
+        
     } catch (err) {
         next(err);
     }

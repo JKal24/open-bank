@@ -3,10 +3,10 @@ import { AccountInfo, UserAccountInfo } from '../types/plaid.js';
 
 export async function addNewAccount(req, res, next) {
     try {
-        const user_id: string = req.body.id;
+        const email: string = req.body.email;
         const userAccountInfo: UserAccountInfo = req.body.info;
 
-        addNewUserAccount(userAccountInfo, user_id);
+        addNewUserAccount(userAccountInfo, email);
     } catch (err) {
         next(err);
     }
