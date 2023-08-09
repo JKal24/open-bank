@@ -6,7 +6,9 @@ export async function addNewAccount(req, res, next) {
         const email: string = req.body.email;
         const userAccountInfo: UserAccountInfo = req.body.info;
 
-        addNewUserAccount(userAccountInfo, email);
+        const output = await addNewUserAccount(userAccountInfo, email);
+        console.log(output);
+        res.json(output);
     } catch (err) {
         next(err);
     }

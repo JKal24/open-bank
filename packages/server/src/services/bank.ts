@@ -34,7 +34,7 @@ export async function addNewUserAccount(userAccountInfo: UserAccountInfo, email:
 
     addItemToDB(item);
 
-    transactionInfo.data.accounts.map(accountData => {
+    const accounts = transactionInfo.data.accounts.map(accountData => {
         const account: Account = {
             item_id: transactionItem.item_id,
             account_id: accountData.account_id,
@@ -44,9 +44,10 @@ export async function addNewUserAccount(userAccountInfo: UserAccountInfo, email:
             balance: accountData.balances.available
         }
         addAccountToDB(account);
+        return account;
     })
 
-    transactionInfo.data.transactions.map(transactionInfo => {
+    const transactions = transactionInfo.data.transactions.map(transactionInfo => {
         const transaction: Transaction = {
             transaction_id: transactionInfo.transaction_id,
             account_id: transactionInfo.account_id,
@@ -56,9 +57,16 @@ export async function addNewUserAccount(userAccountInfo: UserAccountInfo, email:
             merchant_name: transactionInfo.merchant_name,
             payment_channel: transactionInfo.payment_channel,
             currency_code: transactionInfo.iso_currency_code,
-            transaction_type: transactionInfo.category.reduce((prevType, currType) => prevType + "," + currType)
+            transaction_type: transactionInfo.category ? transactionInfo.category.reduce((prevType, currType) => prevType + "," + currType) : ""
         }
         addTransactionToDB(transaction);
+        return transaction;
     })
+
+    return {
+        item,
+        accounts,
+        transactions
+    }
     
 }
