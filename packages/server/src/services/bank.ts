@@ -1,7 +1,7 @@
 import { client } from './client.js';
 import { UserAccountInfo } from '../types/plaid.js';
 import { getDate } from '../utils/date.js';
-import { Item, Account, Transaction } from '../types/db.js';
+import { Item, Account, Transaction } from '@openbank/types';
 import { addItemToDB, addAccountToDB, addTransactionToDB } from './db/bank.js';
 
 export async function getAccount(access_token: string) {
@@ -27,7 +27,6 @@ export async function addNewUserAccount(userAccountInfo: UserAccountInfo, email:
     const item: Item = {
         email,
         item_id: transactionItem.item_id,
-        access_token: userAccountInfo.accessToken,
         institution_id,
         institution_name: userAccountInfo.institution,
     }
@@ -66,7 +65,8 @@ export async function addNewUserAccount(userAccountInfo: UserAccountInfo, email:
     return {
         item,
         accounts,
-        transactions
+        transactions,
+        access_token: userAccountInfo.accessToken
     }
     
 }

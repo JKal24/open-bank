@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "incremental": true,
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "target": "ES2022",
+        "declaration": true,
+        "sourceMap": true,
+        "composite": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    }
+}

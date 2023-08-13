@@ -8,17 +8,5 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ],
-  "scripts": {
-    "start": "lerna run --parallel dev"
-  },
-  "dependencies": {
-    "eslint": "^8.46.0",
-    "prettier": "^3.0.1",
-    "typescript": "^5.1.6"
-  },
-  "devDependencies": {
-    "@types/node": "^20.4.8",
-    "ts-node": "^10.9.1"
-  }
+  ]
 }

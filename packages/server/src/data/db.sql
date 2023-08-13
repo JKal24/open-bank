@@ -1,18 +1,19 @@
 CREATE DATABASE openbank;
 
 CREATE TABLE users(
-    email VARCHAR(255) UNIQUE PRIMARY KEY,
-    pass VARCHAR(255)
+    user_id int UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    pass VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE items(
     item_id VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY,
     access_token VARCHAR(255) NOT NULL UNIQUE,
-    email VARCHAR(255),
+    user_id int,
     institution_id VARCHAR(255),
     institution_name VARCHAR(255),
-    FOREIGN KEY(email)
-        REFERENCES users(email)
+    FOREIGN KEY(user_id)
+        REFERENCES users(user_id)
         ON DELETE CASCADE
 );
 
