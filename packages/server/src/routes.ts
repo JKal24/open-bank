@@ -3,13 +3,13 @@ const router = Router()
 
 import { sendLinkToken, getExistingAccessToken, sendAccessToken } from './controllers/token.js'
 import { addUser } from './controllers/user.js';
-import { addNewAccount } from './controllers/accounts.js';
+import { addNewBank } from './controllers/bank.js';
 
 router.get('/GetLinkToken', sendLinkToken);
 router.post('/GetAccessToken', sendAccessToken);
 router.get('/AccessToken', getExistingAccessToken);
 router.post('/AddUser', addUser);
-router.post('/AddAccount', addNewAccount);
+router.post('/AddBank', addNewBank);
 // routes.get('/Accounts', accountHandler.getAccounts);
 // routes.get('/Balance', balanceHandler.getAccountBalance);
 // routes.get('/Bank', bankHandler.getBank);

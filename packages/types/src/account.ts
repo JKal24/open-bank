@@ -5,6 +5,12 @@ export interface UserAccountInfo {
     accounts: AccountInfo[]
 }
 
+export interface AbstractedUserAccountInfo {
+    institution: string,
+    institution_id: string,
+    accounts: AccountInfo[]
+}
+
 export interface AccountInfo {
     accountId: string,
     accountName: string,

@@ -5,5 +5,14 @@ var database = createPool({
     password: 'root',
     database: 'openbank'
 });
-export default database;
+export function query(query, args) {
+    return new Promise((resolve, reject) => {
+        database.query(query, args, (error, results, fields) => {
+            if (error)
+                reject(error);
+            console.log(results);
+            resolve(results);
+        });
+    });
+}
 //# sourceMappingURL=database.js.map

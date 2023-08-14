@@ -1,16 +1,10 @@
 import { validate } from 'jsonschema';
-import { addUniqueUserDb, getUserDb } from '../services/db/user.js';
+import { addUserDb, getUserIdDb } from '../services/db/user.js';
 
-export function addUser(req, res) {
-    addUniqueUserDb(req.params.email, req.params.pass, (err, dbRes) => {
-        if (err) res.json(err);
-        res.json(dbRes[0].user_id);
-    });
+export async function addUser(req, res) {
+    res.json(await addUserDb(req.params.email, req.params.pass));
 }
 
-export function getUser(req, res) {
-    getUserDb(req.params.email, (err, dbRes) => {
-        if(err) res.json(err);
-        res.json(dbRes[0].user_id);
-    })
+export async function getUser(req, res) {
+    res.json(await getUserIdDb(req.params.email))
 }

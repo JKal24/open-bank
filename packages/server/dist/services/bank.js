@@ -1,6 +1,7 @@
 import { client } from './client.js';
 import { getDate } from '../utils/date.js';
 import { addItemToDB, addAccountToDB, addTransactionToDB } from './db/bank.js';
+import { getUserIdDb } from './db/user.js';
 export async function getAccount(access_token) {
     return await client.accountsGet({ access_token });
 }
@@ -10,20 +11,22 @@ export async function getTransactions(access_token, startDate, endDate) {
 export async function getBalances(access_token) {
     return await client.accountsBalanceGet({ access_token });
 }
-export async function addNewUserAccount(userAccountInfo, email) {
+export async function addBank(userAccountInfo, email) {
     const endDate = getDate(0);
     const startDate = getDate(30);
     const transactionInfo = await getTransactions(userAccountInfo.accessToken, startDate, endDate);
     const institution_id = userAccountInfo.institution_id;
     const transactionItem = transactionInfo.data.item;
+    const userId = await getUserIdDb(email);
+    console.log(userId);
     const item = {
-        email,
+        user_id: userId,
         item_id: transactionItem.item_id,
-        access_token: userAccountInfo.accessToken,
         institution_id,
         institution_name: userAccountInfo.institution,
     };
-    addItemToDB(item);
+    console.log(item);
+    addItemToDB(item, userAccountInfo.accessToken);
     const accounts = transactionInfo.data.accounts.map(accountData => {
         const account = {
             item_id: transactionItem.item_id,
@@ -36,6 +39,7 @@ export async function addNewUserAccount(userAccountInfo, email) {
         addAccountToDB(account);
         return account;
     });
+    console.log(accounts);
     const transactions = transactionInfo.data.transactions.map(transactionInfo => {
         const transaction = {
             transaction_id: transactionInfo.transaction_id,
@@ -51,10 +55,12 @@ export async function addNewUserAccount(userAccountInfo, email) {
         addTransactionToDB(transaction);
         return transaction;
     });
+    console.log(transactions);
     return {
         item,
         accounts,
-        transactions
+        transactions,
+        access_token: userAccountInfo.accessToken
     };
 }
 //# sourceMappingURL=bank.js.map

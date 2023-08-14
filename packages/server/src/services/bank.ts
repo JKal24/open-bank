@@ -1,8 +1,8 @@
 import { client } from './client.js';
-import { UserAccountInfo } from '../types/plaid.js';
 import { getDate } from '../utils/date.js';
-import { Item, Account, Transaction } from '@openbank/types';
+import { Item, Account, UserBankData, Transaction, Bank } from '@openbank/types';
 import { addItemToDB, addAccountToDB, addTransactionToDB } from './db/bank.js';
+import { getUserIdDb } from './db/user.js';
 
 export async function getAccount(access_token: string) {
     return await client.accountsGet({access_token})
@@ -16,24 +16,26 @@ export async function getBalances(access_token: string) {
     return await client.accountsBalanceGet({access_token})
 }
 
-export async function addNewUserAccount(userAccountInfo: UserAccountInfo, email: string) {
+export async function addBank(userBankData: UserBankData): Promise<Bank> {
     const endDate = getDate(0);
     const startDate = getDate(30);
-    const transactionInfo = await getTransactions(userAccountInfo.accessToken, startDate, endDate);
-
-    const institution_id = userAccountInfo.institution_id
+    const transactionInfo = await getTransactions(userBankData.accessToken, startDate, endDate);
     const transactionItem = transactionInfo.data.item;
 
+    const userId = await getUserIdDb(userBankData.email);
+    console.log(userId);
+
     const item: Item = {
-        email,
+        user_id: userId,
         item_id: transactionItem.item_id,
-        institution_id,
-        institution_name: userAccountInfo.institution,
+        institution_id: transactionItem.institution_id,
+        institution_name: userBankData.institutionName,
     }
+    console.log(item);
 
-    addItemToDB(item);
+    addItemToDB(item, userBankData.accessToken);
 
-    const accounts = transactionInfo.data.accounts.map(accountData => {
+    const accounts: Account[] = transactionInfo.data.accounts.map(accountData => {
         const account: Account = {
             item_id: transactionItem.item_id,
             account_id: accountData.account_id,
@@ -45,8 +47,9 @@ export async function addNewUserAccount(userAccountInfo: UserAccountInfo, email:
         addAccountToDB(account);
         return account;
     })
+    console.log(accounts);
 
-    const transactions = transactionInfo.data.transactions.map(transactionInfo => {
+    const transactions: Transaction[] = transactionInfo.data.transactions.map(transactionInfo => {
         const transaction: Transaction = {
             transaction_id: transactionInfo.transaction_id,
             account_id: transactionInfo.account_id,
@@ -61,12 +64,12 @@ export async function addNewUserAccount(userAccountInfo: UserAccountInfo, email:
         addTransactionToDB(transaction);
         return transaction;
     })
+    console.log(transactions);
 
     return {
         item,
         accounts,
         transactions,
-        access_token: userAccountInfo.accessToken
+        access_token: userBankData.accessToken
     }
-    
 }
