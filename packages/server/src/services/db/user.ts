@@ -1,21 +1,21 @@
+import { User } from '@openbank/types';
 import { query } from '../../data/database.js';
 
 export async function addUserDb(email: string, password: string) {
-    if (await checkIfUserExistsDb(email, password)) {
+    if (await checkIfUserExistsDb(email)) {
+        return { user_id: null }
+    } else {
+        await query("INSERT INTO users (user_id, email, pass) VALUES (0, ?, ?)", [email, password]);
 
+        return await getUserIdDb(email);
     }
-    const results = await query("INSERT INTO users (user_id, email, pass) VALUES (0, ?, ?)", [email, password]);
-    console.log(results);
-
-    return await getUserIdDb(email);
 }
 
-async function checkIfUserExistsDb(email: string, password: string) {
-    const results = await query("SELECT * FROM users WHERE email LIKE '?'", [email]);
-    console.log(results);
-    return results;
+export async function checkIfUserExistsDb(email: string) {
+    const results = await query<User>("SELECT * FROM users WHERE email LIKE ?", [email]);
+    return results[0] == null;
 }
 
-export async function getUserIdDb(email: string): Promise<string> {
-    return await query<string>("SELECT * FROM users WHERE email = ?", [email])
+export async function getUserIdDb(email: string): Promise<User> {
+    return (await query<User>("SELECT * FROM users WHERE email = ?", [email]))[0]
 }

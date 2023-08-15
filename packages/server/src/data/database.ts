@@ -9,10 +9,13 @@ var database = createPool({
 
 export function query<T> (query: string, args: any[]): Promise<T> {
     return new Promise<T>((resolve, reject) => {
-        database.query(query, args, (error, results, fields) => {
-            if (error) reject(error);
-            console.log(results);
-            resolve(results);
-        })
+        try {
+            database.query(query, args, (error, results, fields) => {
+                if (error) reject(error);
+                resolve(results);
+            })
+        } catch (err) {
+            reject(err);
+        }
     })
 }

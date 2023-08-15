@@ -1,17 +1,18 @@
 import { query } from '../../data/database.js';
 export async function addUserDb(email, password) {
-    if (await checkIfUserExistsDb(email, password)) {
+    if (await checkIfUserExistsDb(email)) {
+        return { user_id: null };
     }
-    const results = await query("INSERT INTO users (user_id, email, pass) VALUES (0, ?, ?)", [email, password]);
-    console.log(results);
-    return await getUserIdDb(email);
+    else {
+        await query("INSERT INTO users (user_id, email, pass) VALUES (0, ?, ?)", [email, password]);
+        return await getUserIdDb(email);
+    }
 }
-async function checkIfUserExistsDb(email, password) {
-    const results = await query("SELECT * FROM users WHERE email LIKE '?'", [email]);
-    console.log(results);
-    return results;
+export async function checkIfUserExistsDb(email) {
+    const results = await query("SELECT * FROM users WHERE email LIKE ?", [email]);
+    return results[0] == null;
 }
 export async function getUserIdDb(email) {
-    return await query("SELECT * FROM users WHERE email = ?", [email]);
+    return (await query("SELECT * FROM users WHERE email = ?", [email]))[0];
 }
 //# sourceMappingURL=user.js.map

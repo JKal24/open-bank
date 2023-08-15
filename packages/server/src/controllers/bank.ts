@@ -6,7 +6,6 @@ export async function addNewBank(req, res, next) {
         const userBankData: UserBankData = req.body;
 
         const output = await addBank(userBankData);
-        
         res.json(output);
     } catch (err) {
         next(err);

@@ -1,15 +1,16 @@
 import { client } from './client.js';
 import { getDate } from '../utils/date.js';
-import { Item, Account, UserBankData, Transaction, Bank } from '@openbank/types';
+import { Item, Account, UserBankData, Transaction, Bank, User } from '@openbank/types';
 import { addItemToDB, addAccountToDB, addTransactionToDB } from './db/bank.js';
 import { getUserIdDb } from './db/user.js';
+import { AccountBase, Transaction as PlaidTransaction, TransactionsGetResponse } from 'plaid';
 
 export async function getAccount(access_token: string) {
     return await client.accountsGet({access_token})
 }
 
-export async function getTransactions(access_token: string, startDate: string, endDate: string) {
-    return await client.transactionsGet({access_token, start_date: startDate, end_date: endDate});
+export async function getTransactions(access_token: string, startDate: string, endDate: string): Promise<TransactionsGetResponse> {
+    return (await client.transactionsGet({access_token, start_date: startDate, end_date: endDate})).data;
 }
 
 export async function getBalances(access_token: string) {
@@ -20,36 +21,48 @@ export async function addBank(userBankData: UserBankData): Promise<Bank> {
     const endDate = getDate(0);
     const startDate = getDate(30);
     const transactionInfo = await getTransactions(userBankData.accessToken, startDate, endDate);
-    const transactionItem = transactionInfo.data.item;
+    const transactionItem = transactionInfo.item;
 
-    const userId = await getUserIdDb(userBankData.email);
-    console.log(userId);
+    const user: User = await getUserIdDb(userBankData.email);
 
     const item: Item = {
-        user_id: userId,
+        user_id: user.user_id,
         item_id: transactionItem.item_id,
         institution_id: transactionItem.institution_id,
         institution_name: userBankData.institutionName,
     }
-    console.log(item);
 
-    addItemToDB(item, userBankData.accessToken);
+    await addItemToDB(item, userBankData.accessToken);
+    
+    const accounts: Account[] = await addAccounts(transactionInfo, transactionItem.item_id)
 
-    const accounts: Account[] = transactionInfo.data.accounts.map(accountData => {
+    const transactions: Transaction[] = await addTransactions(transactionInfo);
+
+    return {
+        item,
+        accounts,
+        transactions,
+        access_token: userBankData.accessToken
+    }
+}
+
+async function addAccounts(transactionInfo: TransactionsGetResponse, item_id: string): Promise<Account[]> {
+    return await Promise.all(transactionInfo.accounts.map(async (accountData: AccountBase) => {
         const account: Account = {
-            item_id: transactionItem.item_id,
             account_id: accountData.account_id,
+            item_id,
             account_type: accountData.type,
             account_subtype: accountData.subtype,
             account_mask: accountData.mask,
             balance: accountData.balances.available
         }
-        addAccountToDB(account);
+        await addAccountToDB(account);
         return account;
-    })
-    console.log(accounts);
+    }))
+}
 
-    const transactions: Transaction[] = transactionInfo.data.transactions.map(transactionInfo => {
+async function addTransactions(transactionInfo: TransactionsGetResponse): Promise<Transaction[]> {
+    return await Promise.all(transactionInfo.transactions.map(async (transactionInfo: PlaidTransaction) => {
         const transaction: Transaction = {
             transaction_id: transactionInfo.transaction_id,
             account_id: transactionInfo.account_id,
@@ -61,15 +74,7 @@ export async function addBank(userBankData: UserBankData): Promise<Bank> {
             currency_code: transactionInfo.iso_currency_code,
             transaction_type: transactionInfo.category ? transactionInfo.category.reduce((prevType, currType) => prevType + "," + currType) : ""
         }
-        addTransactionToDB(transaction);
+        await addTransactionToDB(transaction);
         return transaction;
-    })
-    console.log(transactions);
-
-    return {
-        item,
-        accounts,
-        transactions,
-        access_token: userBankData.accessToken
-    }
+    }))
 }
