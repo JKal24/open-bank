@@ -11,9 +11,9 @@ export async function addUserDb(email: string, password: string) {
     }
 }
 
-export async function checkIfUserExistsDb(email: string) {
+export async function checkIfUserExistsDb(email: string): Promise<boolean> {
     const results = await query<User>("SELECT * FROM users WHERE email LIKE ?", [email]);
-    return results[0] == null;
+    return results[0] != null;
 }
 
 export async function getUserIdDb(email: string): Promise<User> {
