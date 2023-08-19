@@ -1,9 +1,10 @@
-import { addUserDb, checkIfUserExistsDb, getUserIdDb } from '../services/db/user.js';
+import { addUserDb, checkIfUserExistsDb, validateUserDb } from '../services/db/user.js';
 export async function addUser(req, res) {
-    res.json(await addUserDb(req.body.email, req.body.password));
+    await addUserDb(req.body.email, req.body.password);
 }
-export async function getUser(req, res) {
-    res.json(await getUserIdDb(req.body.email));
+export async function getUserId(req, res) {
+    const user_id = await validateUserDb(req.body.email, req.body.password);
+    res.json(user_id);
 }
 export async function checkIfUserExists(req, res) {
     res.json(await checkIfUserExistsDb(req.body.email));

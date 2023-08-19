@@ -1,14 +1,14 @@
 import { Router } from 'express';
 const router = Router();
 import { sendLinkToken, getExistingAccessToken, sendAccessToken } from './controllers/token.js';
-import { addUser, checkIfUserExists, getUser } from './controllers/user.js';
+import { addUser, checkIfUserExists, getUserId } from './controllers/user.js';
 import { addNewBank } from './controllers/bank.js';
 router.get('/GetLinkToken', sendLinkToken);
 router.post('/GetAccessToken', sendAccessToken);
 router.get('/AccessToken', getExistingAccessToken);
 router.post('/CheckUserExists', checkIfUserExists);
 router.post('/AddUser', addUser);
-router.post('/GetUser', getUser);
+router.post('/GetUserId', getUserId);
 router.post('/AddBank', addNewBank);
 // routes.get('/Accounts', accountHandler.getAccounts);
 // routes.get('/Balance', balanceHandler.getAccountBalance);
