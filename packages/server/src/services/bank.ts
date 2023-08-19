@@ -23,10 +23,8 @@ export async function addBank(userBankData: UserBankData): Promise<Bank> {
     const transactionInfo = await getTransactions(userBankData.accessToken, startDate, endDate);
     const transactionItem = transactionInfo.item;
 
-    const user: User = await getUserIdDb(userBankData.email);
-
     const item: Item = {
-        user_id: user.user_id,
+        user_id: userBankData.user_id,
         item_id: transactionItem.item_id,
         institution_id: transactionItem.institution_id,
         institution_name: userBankData.institutionName,

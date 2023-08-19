@@ -4,8 +4,12 @@ export interface User {
     pass: string
 }
 
+export interface AbstractedUser {
+    user_id: string
+}
+
 export interface UserBankData {
-    email: string,
+    user_id: string,
     accessToken: string,
     institutionName: string
 }
