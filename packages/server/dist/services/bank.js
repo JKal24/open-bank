@@ -1,7 +1,6 @@
 import { client } from './client.js';
 import { getDate } from '../utils/date.js';
 import { addItemToDB, addAccountToDB, addTransactionToDB } from './db/bank.js';
-import { getUserIdDb } from './db/user.js';
 export async function getAccount(access_token) {
     return await client.accountsGet({ access_token });
 }
@@ -16,9 +15,8 @@ export async function addBank(userBankData) {
     const startDate = getDate(30);
     const transactionInfo = await getTransactions(userBankData.accessToken, startDate, endDate);
     const transactionItem = transactionInfo.item;
-    const user = await getUserIdDb(userBankData.email);
     const item = {
-        user_id: user.user_id,
+        user_id: userBankData.user_id,
         item_id: transactionItem.item_id,
         institution_id: transactionItem.institution_id,
         institution_name: userBankData.institutionName,
