@@ -1,11 +1,7 @@
+import { AbstractedTransaction } from "."
+
 export interface UserAccountInfo {
     accessToken: string,
-    institution: string,
-    institution_id: string,
-    accounts: AccountInfo[]
-}
-
-export interface AbstractedUserAccountInfo {
     institution: string,
     institution_id: string,
     accounts: AccountInfo[]
@@ -26,4 +22,18 @@ export interface Account {
     account_subtype: string,
     account_mask: string,
     balance: number
+}
+
+export interface AbstractedUserAccountInfo {
+    institution: string,
+    institution_id: string,
+    accounts: AccountInfo[]
+}
+
+export interface AbstractedAccount {
+    account_type: string,
+    account_subtype: string,
+    account_mask: string,
+    balance: number,
+    transactions: AbstractedTransaction[]
 }

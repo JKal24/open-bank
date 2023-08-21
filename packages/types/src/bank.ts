@@ -1,4 +1,4 @@
-import { Account, Item, Transaction } from "."
+import { AbstractedItem, Account, Item, Transaction } from "."
 
 export interface Bank {
     item: Item,
@@ -8,7 +8,5 @@ export interface Bank {
 }
 
 export interface AbstractedBank {
-    item: Item,
-    accounts: Account[],
-    transactions: Transaction[]
+    items: AbstractedItem[]
 }

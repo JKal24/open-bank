@@ -12,3 +12,15 @@ export async function addAccountToDB(account: Account) {
 export async function addTransactionToDB(transaction: Transaction) {
     await query("INSERT INTO transactions (transaction_id, account_id, authorized_date, payment_date, amount, merchant_name, payment_channel, currency_code, transaction_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ", [transaction.transaction_id, transaction.account_id, transaction.authorized_date, transaction.payment_date, transaction.amount, transaction.merchant_name, transaction.payment_channel, transaction.currency_code, transaction.transaction_type]);
 }
+
+export async function getItemsFromDb(user_id: string): Promise<Item[]> {
+    return (await query<Item[]>("SELECT * FROM items WHERE user_id = ?", [user_id]))
+}
+
+export async function getAccountsFromDb(item_id: string): Promise<Account[]> {
+    return (await query<Account[]>("SELECT * FROM accounts WHERE item_id = ?", [item_id]))
+}
+
+export async function getTransactionsFromDb(account_id: string): Promise<Transaction[]> {
+    return (await query<Transaction[]>("SELECT * FROM transactions WHERE account_id = ?", [account_id]))
+}
