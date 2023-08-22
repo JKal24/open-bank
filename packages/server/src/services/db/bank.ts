@@ -14,13 +14,16 @@ export async function addTransactionToDB(transaction: Transaction) {
 }
 
 export async function getItemsFromDb(user_id: string): Promise<Item[]> {
-    return (await query<Item[]>("SELECT * FROM items WHERE user_id = ?", [user_id]))
+    const items = (await query<Item[]>("SELECT * FROM items WHERE user_id = ?", [user_id]));
+    return items;
 }
 
 export async function getAccountsFromDb(item_id: string): Promise<Account[]> {
-    return (await query<Account[]>("SELECT * FROM accounts WHERE item_id = ?", [item_id]))
+    const accounts = (await query<Account[]>("SELECT * FROM accounts WHERE item_id = ?", [item_id]));
+    return accounts;
 }
 
 export async function getTransactionsFromDb(account_id: string): Promise<Transaction[]> {
-    return (await query<Transaction[]>("SELECT * FROM transactions WHERE account_id = ?", [account_id]))
+    const transactions = (await query<Transaction[]>("SELECT * FROM transactions WHERE account_id = ?", [account_id]));
+    return transactions;
 }

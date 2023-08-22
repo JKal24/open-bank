@@ -1,7 +1,7 @@
 export interface Transaction {
     transaction_id: string,
     account_id: string,
-    authorized_date: string,
+    authorized_date: string|null,
     payment_date: string,
     amount: number,
     merchant_name: string,
@@ -11,7 +11,7 @@ export interface Transaction {
 }
 
 export interface AbstractedTransaction {
-    authorized_date: string,
+    authorized_date: string|null,
     payment_date: string,
     amount: number,
     merchant_name: string,

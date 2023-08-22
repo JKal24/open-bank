@@ -1,6 +1,6 @@
 import { client } from './client.js';
 import { getDate } from '../utils/date.js';
-import { Item, Account, UserBankData, Transaction, AbstractedBank, AbstractedItem, AbstractedAccount } from '@openbank/types';
+import { Item, Account, UserBankData, Transaction, AbstractedBank, AbstractedItem, AbstractedAccount, AbstractedTransaction } from '@openbank/types';
 import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb } from './db/bank.js';
 import { getUserIdDb } from './db/user.js';
 import { AccountBase, Transaction as PlaidTransaction, TransactionsGetResponse } from 'plaid';
@@ -111,25 +111,43 @@ async function addTransactions(transactionInfo: TransactionsGetResponse): Promis
 
 export async function getBank(user_id: string): Promise<AbstractedBank> {
     const items: Item[] = (await getItemsFromDb(user_id));
-    let accounts: Account[] = [];
-    let transactions: Transaction[] = [];
 
-    const abstractedItems: AbstractedItem[] = [];
-
-    await Promise.all(
+    const abstractedItems: AbstractedItem[] = await Promise.all(
         items.map(async item => {
-            const receivedAccounts = (await getAccountsFromDb(item.item_id))
-            accounts = accounts.concat(receivedAccounts)
-            return Promise.all(
-                accounts.map(async account => {
-                    const receivedTransactions = (await getTransactionsFromDb(account.account_id));
-                    transactions = transactions.concat(receivedTransactions);
-                    abstractedItems.push(createAbstractedItem(item, accounts, transactions));
-                })
-            )
-        })
-    );
+            const accounts = (await getAccountsFromDb(item.item_id))
+            const abstractedAccounts: AbstractedAccount[] = await Promise.all(accounts.map(async account => {
 
+                const transactions = (await getTransactionsFromDb(account.account_id));
+                const abstractedTransactions: AbstractedTransaction[] = transactions.map(transaction => {
+                    return {
+                        authorized_date: transaction.authorized_date,
+                        payment_date: transaction.payment_date,
+                        amount: transaction.amount,
+                        merchant_name: transaction.merchant_name,
+                        payment_channel: transaction.payment_channel,
+                        currency_code: transaction.currency_code,
+                        transaction_type: transaction.transaction_type
+                    }
+                })
+                return {
+                    account_type: account.account_type,
+                    account_subtype: account.account_subtype,
+                    account_mask: account.account_mask,
+                    balance: account.balance,
+                    transactions: abstractedTransactions
+                }
+            }))
+
+            const abstractedItem: AbstractedItem = {
+                institution_id: item.institution_id,
+                institution_name: item.institution_name,
+                accounts: abstractedAccounts
+            }
+
+            return abstractedItem;
+        })
+    )
+    
     return {
         items: abstractedItems
     }

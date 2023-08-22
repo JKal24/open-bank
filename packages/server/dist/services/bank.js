@@ -1,6 +1,6 @@
 import { client } from './client.js';
 import { getDate } from '../utils/date.js';
-import { addItemToDB, addAccountToDB, addTransactionToDB } from './db/bank.js';
+import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb } from './db/bank.js';
 export async function getAccount(access_token) {
     return await client.accountsGet({ access_token });
 }
@@ -24,12 +24,38 @@ export async function addBank(userBankData) {
     await addItemToDB(item, userBankData.accessToken);
     const accounts = await addAccounts(transactionInfo, transactionItem.item_id);
     const transactions = await addTransactions(transactionInfo);
-    return {
-        item,
-        accounts,
-        transactions,
-        access_token: userBankData.accessToken
+    return createAbstractedItem(item, accounts, transactions);
+}
+function createAbstractedItem(item, accounts, transactions) {
+    const abstractedItem = {
+        institution_id: item.institution_id,
+        institution_name: item.institution_name,
+        accounts: []
     };
+    accounts.forEach(account => {
+        const abstractedAccount = {
+            account_type: account.account_type,
+            account_subtype: account.account_subtype,
+            account_mask: account.account_mask,
+            balance: account.balance,
+            transactions: []
+        };
+        transactions.forEach(transaction => {
+            if (transaction.account_id === account.account_id) {
+                abstractedAccount.transactions.push({
+                    authorized_date: transaction.authorized_date,
+                    payment_date: transaction.payment_date,
+                    amount: transaction.amount,
+                    merchant_name: transaction.merchant_name,
+                    payment_channel: transaction.payment_channel,
+                    currency_code: transaction.currency_code,
+                    transaction_type: transaction.transaction_id
+                });
+            }
+        });
+        abstractedItem.accounts.push(abstractedAccount);
+    });
+    return abstractedItem;
 }
 async function addAccounts(transactionInfo, item_id) {
     return await Promise.all(transactionInfo.accounts.map(async (accountData) => {
@@ -61,5 +87,41 @@ async function addTransactions(transactionInfo) {
         await addTransactionToDB(transaction);
         return transaction;
     }));
+}
+export async function getBank(user_id) {
+    const items = (await getItemsFromDb(user_id));
+    const abstractedItems = await Promise.all(items.map(async (item) => {
+        const accounts = (await getAccountsFromDb(item.item_id));
+        const abstractedAccounts = await Promise.all(accounts.map(async (account) => {
+            const transactions = (await getTransactionsFromDb(account.account_id));
+            const abstractedTransactions = transactions.map(transaction => {
+                return {
+                    authorized_date: transaction.authorized_date,
+                    payment_date: transaction.payment_date,
+                    amount: transaction.amount,
+                    merchant_name: transaction.merchant_name,
+                    payment_channel: transaction.payment_channel,
+                    currency_code: transaction.currency_code,
+                    transaction_type: transaction.transaction_type
+                };
+            });
+            return {
+                account_type: account.account_type,
+                account_subtype: account.account_subtype,
+                account_mask: account.account_mask,
+                balance: account.balance,
+                transactions: abstractedTransactions
+            };
+        }));
+        const abstractedItem = {
+            institution_id: item.institution_id,
+            institution_name: item.institution_name,
+            accounts: abstractedAccounts
+        };
+        return abstractedItem;
+    }));
+    return {
+        items: abstractedItems
+    };
 }
 //# sourceMappingURL=bank.js.map
