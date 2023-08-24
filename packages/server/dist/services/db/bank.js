@@ -18,9 +18,6 @@ export async function getAccountsFromDb(item_id) {
 }
 export async function getTransactionsFromDb(account_id) {
     const transactions = (await query("SELECT * FROM transactions WHERE account_id = ?", [account_id]));
-    console.log(account_id);
-    transactions.forEach((account, i) => console.log("Transaction ID: " + i + " " + account.transaction_id));
-    console.log("\n");
     return transactions;
 }
 //# sourceMappingURL=bank.js.map

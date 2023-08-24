@@ -1,14 +1,20 @@
+import { Response } from 'express';
 import { addUserDb, checkIfUserExistsDb, validateUserDb } from '../services/db/user.js';
 
 export async function addUser(req, res) {
     await addUserDb(req.body.email, req.body.password);
 }
 
-export async function getUserId(req, res) {
+export async function getUserId(req, res: Response) {
     const user_id = await validateUserDb(req.body.email, req.body.password);
-    res.json(user_id);
+    if (user_id) {
+        res.json(user_id);
+    } else {
+        res.status(401).send({status: "Wrong username or password!"});
+    }
 }
 
 export async function checkIfUserExists(req, res) {
-    res.json(await checkIfUserExistsDb(req.body.email));
+    const user = await checkIfUserExistsDb(req.body.email);
+    res.json(user);
 }

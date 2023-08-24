@@ -13,7 +13,8 @@ export async function checkIfUserExistsDb(email: string): Promise<boolean> {
 }
 
 export async function getUserIdDb(email: string): Promise<User> {
-    return (await query<User>("SELECT * FROM users WHERE email = ? AND pass = ?", [email]))[0]
+    const results = (await query<User>("SELECT * FROM users WHERE email = ? AND pass = ?", [email]))[0];
+    return results;
 }
 
 export async function validateUserDb(email: string, password: string): Promise<string> {

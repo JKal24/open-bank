@@ -14,7 +14,7 @@ export async function addNewBank(req, res, next) {
 
 export async function getAllBanks(req, res, next) {
     try {
-        const user_id: string = req.body.used_id;
+        const user_id: string = req.body;
 
         const output = await getBank(user_id);
         res.json(output);

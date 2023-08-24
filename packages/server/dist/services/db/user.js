@@ -9,7 +9,8 @@ export async function checkIfUserExistsDb(email) {
     return results[0] != null;
 }
 export async function getUserIdDb(email) {
-    return (await query("SELECT * FROM users WHERE email = ? AND pass = ?", [email]))[0];
+    const results = (await query("SELECT * FROM users WHERE email = ? AND pass = ?", [email]))[0];
+    return results;
 }
 export async function validateUserDb(email, password) {
     return (await query("SELECT user_id FROM users WHERE email = ? AND pass = ?", [email, password]))[0];
