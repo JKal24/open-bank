@@ -12,7 +12,9 @@ export async function addNewBank(req, res, next) {
 export async function getAllBanks(req, res, next) {
     try {
         const user_id = req.body;
+        console.log(req.body);
         const output = await getBank(user_id);
+        console.log(output);
         res.json(output);
     }
     catch (err) {
