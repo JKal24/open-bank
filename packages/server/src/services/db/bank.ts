@@ -6,7 +6,7 @@ export async function addItemToDB(item: Item, access_token: string) {
 }
 
 export async function addAccountToDB(account: Account) {
-    await query("INSERT INTO accounts (account_id, item_id, account_type, account_subtype, account_mask, balance) VALUES (?, ?, ?, ?, ?, ?) ", [account.account_id, account.item_id, account.account_type, account.account_subtype, account.account_mask, account.balance]);
+    await query("INSERT INTO accounts (account_id, item_id, account_type, account_subtype, account_mask, balance, currency_code) VALUES (?, ?, ?, ?, ?, ?, ?) ", [account.account_id, account.item_id, account.account_type, account.account_subtype, account.account_mask, account.balance, account.currency_code]);
 }
 
 export async function addTransactionToDB(transaction: Transaction) {

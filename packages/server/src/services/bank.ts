@@ -2,7 +2,6 @@ import { client } from './client.js';
 import { getDate } from '../utils/date.js';
 import { Item, Account, UserBankData, Transaction, AbstractedBank, AbstractedItem, AbstractedAccount, AbstractedTransaction } from '@openbank/types';
 import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb } from './db/bank.js';
-import { getUserIdDb } from './db/user.js';
 import { AccountBase, Transaction as PlaidTransaction, TransactionsGetResponse } from 'plaid';
 
 export async function getAccount(access_token: string) {
@@ -52,6 +51,7 @@ function createAbstractedItem(item: Item, accounts: Account[], transactions: Tra
             account_subtype: account.account_subtype,
             account_mask: account.account_mask,
             balance: account.balance,
+            currency_code: account.currency_code,
             transactions: []
         }
 
@@ -64,7 +64,7 @@ function createAbstractedItem(item: Item, accounts: Account[], transactions: Tra
                     merchant_name: transaction.merchant_name,
                     payment_channel: transaction.payment_channel,
                     currency_code: transaction.currency_code,
-                    transaction_type: transaction.transaction_id
+                    transaction_type: transaction.transaction_type
                 })
             }
         })
@@ -84,7 +84,8 @@ async function addAccounts(transactionInfo: TransactionsGetResponse, item_id: st
             account_type: accountData.type,
             account_subtype: accountData.subtype,
             account_mask: accountData.mask,
-            balance: accountData.balances.available
+            balance: accountData.balances.available,
+            currency_code: accountData.balances.iso_currency_code
         }
         await addAccountToDB(account);
         return account;
@@ -134,6 +135,7 @@ export async function getBank(user_id: string): Promise<AbstractedBank> {
                     account_subtype: account.account_subtype,
                     account_mask: account.account_mask,
                     balance: account.balance,
+                    currency_code: account.currency_code,
                     transactions: abstractedTransactions
                 }
             }))

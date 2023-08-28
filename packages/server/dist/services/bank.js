@@ -38,6 +38,7 @@ function createAbstractedItem(item, accounts, transactions) {
             account_subtype: account.account_subtype,
             account_mask: account.account_mask,
             balance: account.balance,
+            currency_code: account.currency_code,
             transactions: []
         };
         transactions.forEach(transaction => {
@@ -49,7 +50,7 @@ function createAbstractedItem(item, accounts, transactions) {
                     merchant_name: transaction.merchant_name,
                     payment_channel: transaction.payment_channel,
                     currency_code: transaction.currency_code,
-                    transaction_type: transaction.transaction_id
+                    transaction_type: transaction.transaction_type
                 });
             }
         });
@@ -65,7 +66,8 @@ async function addAccounts(transactionInfo, item_id) {
             account_type: accountData.type,
             account_subtype: accountData.subtype,
             account_mask: accountData.mask,
-            balance: accountData.balances.available
+            balance: accountData.balances.available,
+            currency_code: accountData.balances.iso_currency_code
         };
         await addAccountToDB(account);
         return account;
@@ -110,6 +112,7 @@ export async function getBank(user_id) {
                 account_subtype: account.account_subtype,
                 account_mask: account.account_mask,
                 balance: account.balance,
+                currency_code: account.currency_code,
                 transactions: abstractedTransactions
             };
         }));

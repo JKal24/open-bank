@@ -24,6 +24,7 @@ CREATE TABLE accounts(
     account_subtype VARCHAR(255),
     account_mask VARCHAR(255),
     balance int,
+    currency_code VARCHAR(255),
     FOREIGN KEY(item_id)
         REFERENCES items(item_id)
         ON DELETE CASCADE
@@ -43,3 +44,5 @@ CREATE TABLE transactions(
         REFERENCES accounts(account_id)
         ON DELETE CASCADE
 );
+
+SET FOREIGN_KEY_CHECKS = 0;

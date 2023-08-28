@@ -21,7 +21,8 @@ export interface Account {
     account_type: string,
     account_subtype: string,
     account_mask: string,
-    balance: number
+    balance: number,
+    currency_code: string
 }
 
 export interface AbstractedUserAccountInfo {
@@ -35,5 +36,6 @@ export interface AbstractedAccount {
     account_subtype: string,
     account_mask: string,
     balance: number,
+    currency_code: string,
     transactions: AbstractedTransaction[]
 }

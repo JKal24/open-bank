@@ -7,14 +7,14 @@ import {
 import { useAppSelector, useAppDispatch } from '@/libs/redux/hooks';
 import { selectUserId } from '@/libs/redux/user/userSlice';
 import { selectItems, addItem } from '@/libs/redux/bank/bankSlice';
-import { AbstractedBank, AbstractedItem, AbstractedTransaction } from '@openbank/types';
+import { AbstractedBank, AbstractedItem } from '@openbank/types';
 import { parseJSONReadableStream } from '@/libs/requests/stream';
 import Link from 'next/link';
 
 export default function Dashboard() {
 
     const [linkToken, setLinkToken] = useState<string|null>(null);
-    const user_id = useAppSelector(selectUserId)
+    const user_id: string = useAppSelector(selectUserId).user_id
 
     const items = useAppSelector(selectItems);
     const [itemsIndex, setItemsIndex] = useState(0);
@@ -140,7 +140,7 @@ export default function Dashboard() {
                                 <div className="font-normal text-gray-700 dark:text-gray-400 flex flex-row justify-evenly">
                                     {
                                         item.accounts.map((account, accountIndex) => (
-                                            <div key={accountIndex} className="">
+                                            <div key={accountIndex}>
                                                 <h1>{account.account_type}</h1>
                                                 <h3>{account.account_subtype}</h3>
                                                 <h5>{account.balance}</h5>
@@ -177,32 +177,31 @@ export default function Dashboard() {
                 {
                     buildTransactionsItems(items).slice(0, 10).map((transactionalItem, index) => (
                         <div key={index} className="grid grid-cols-7 gap-1 px-6">
-                            <h4 className="bg-slate-200 px-1">
+                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
                                 {transactionalItem.payment_date}
                             </h4>
-                            <h4 className="bg-slate-200 px-1">
+                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
                                 {`${transactionalItem.amount} ${transactionalItem.currency_code}`}
                             </h4>
-                            <h4 className="bg-slate-200 px-1">
+                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
                                 {transactionalItem.merchant_name}
                             </h4>
-                            <h4 className="bg-slate-200 px-1">
+                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
                                 {transactionalItem.payment_channel}
                             </h4>
-                            <h4 className="bg-slate-200 px-1">
+                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
                                 {transactionalItem.transaction_type}
                             </h4>
-                            <h4 className="bg-slate-200 px-1">
+                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
                                 {transactionalItem.institution_name}
                             </h4>
-                            <h4 className="bg-slate-200 px-1">
+                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
                                 {transactionalItem.account_type}
                             </h4>
                         </div>
                     ))
                 }
             </div>
-            
         </div>
     );
 }

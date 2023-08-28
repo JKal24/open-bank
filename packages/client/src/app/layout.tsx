@@ -1,9 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Providers } from '@/libs/redux/providers'
+import { RouteGuard } from '@/components/route-guard'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
-import { Providers } from '@/libs/redux/providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,11 +22,13 @@ export default function RootLayout({
     <html lang="en" className="h-full w-full">
       <body className={inter.className}>
         <Providers>
-          <div className="h-screen flex flex-col">
-            <Header />
-            {children}
-            <Footer />
-          </div>
+          <main className="h-screen flex flex-col">
+            <RouteGuard>
+              <Header/>
+              {children}
+              <Footer/>
+            </RouteGuard>
+          </main>
         </Providers>
       </body>
     </html>

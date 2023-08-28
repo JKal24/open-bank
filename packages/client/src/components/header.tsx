@@ -8,7 +8,8 @@ import { purge } from '@/libs/redux/store';
 
 export default function Header() {
 
-    const user_id: string = useAppSelector(selectUserId);
+    const user_id: string = useAppSelector(selectUserId).user_id;
+    console.log(user_id);
 
     return (
         <div className='w-full py-2 h-fit bg-footer'>
