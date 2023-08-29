@@ -7,6 +7,7 @@ import { parseJSONReadableStream, parseReadableStream } from '@/libs/requests/st
 import { useRouter } from 'next/navigation';
 import { addUserId } from '@/libs/redux/user/userSlice';
 import { AbstractedUser } from '@openbank/types';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function Entry() {
 
@@ -16,6 +17,8 @@ export default function Entry() {
     const [emailTakenError, setEmailTakenError] = useState(false);
     const [wrongLoginError, setWrongLoginError] = useState(false);
     const signUp = useAppSelector(selectSignup);
+
+    const { user, error, isLoading } = useUser();
 
     const router = useRouter();
 
@@ -66,7 +69,7 @@ export default function Entry() {
     }
 
     const handleLogin = async () => {
-        const response = await fetch('http://localhost:5000/GetUserId', {
+        const userResponse = await fetch('http://localhost:5000/GetUserId', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -75,12 +78,31 @@ export default function Entry() {
             body: JSON.stringify({ email, password })
         });
 
-        if (response.status !== 401) {
-            const user: AbstractedUser = JSON.parse(await parseReadableStream(response));
-            router.push("/summary")
-            dispatch(addUserId(user.user_id));
-        } else {
+        if (userResponse.status === 401 || !userResponse.ok) {
             setWrongLoginError(true);
+        } else {
+            console.log(isLoading)
+            console.log(user)
+
+            try {
+                const res = await parseReadableStream(await fetch('/api/auth/login', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                }))
+                console.log(res);
+            } catch (err) {
+                console.log(err);
+            }
+
+            
+            console.log(isLoading)
+            console.log(user)
+            const abstractedUser: AbstractedUser = JSON.parse(await parseReadableStream(userResponse));
+            router.push("/summary")
+            dispatch(addUserId(abstractedUser.user_id));
         }
     }
 
@@ -169,5 +191,4 @@ export default function Entry() {
             </div>
         </div>
     )
-
 }

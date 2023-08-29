@@ -24,7 +24,7 @@ function RouteGuard({ children }: { children: React.ReactNode }) {
     function authCheck() {
         // redirect to login page if accessing a private page and not logged in
         
-        const publicPaths = ['/entry', '/'];
+        const publicPaths = ['/entry', '/', '/auth'];
         const path = url.split('?')[0];
 
         if (!user_id && !publicPaths.includes(path)) {
