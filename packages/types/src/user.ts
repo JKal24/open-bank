@@ -5,7 +5,8 @@ export interface User {
 }
 
 export interface AbstractedUser {
-    user_id: string
+    user_id: string,
+    access_token: string
 }
 
 export interface UserBankData {

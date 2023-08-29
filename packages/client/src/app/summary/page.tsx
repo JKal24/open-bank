@@ -23,7 +23,7 @@ export default function Dashboard() {
     const dispatch = useAppDispatch();
 
     const createLinkToken = async () => {
-        const tokenResponse = await fetch('http://localhost:5000/GetLinkToken');
+        const tokenResponse = await fetch(process.env.SERVER_URL + '/GetLinkToken');
         const response = await tokenResponse.json();
         setLinkToken(response);
     }

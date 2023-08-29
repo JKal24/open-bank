@@ -3,8 +3,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Providers } from '@/libs/redux/providers'
 import { RouteGuard } from '@/components/route-guard'
-import AuthProvider from '@/components/auth-provider'
-import { UserProvider } from '@auth0/nextjs-auth0/client'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 
@@ -22,19 +20,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full w-full">
-      <UserProvider>
-        <body className={inter.className}>
-          <Providers>
-              <main className="h-screen flex flex-col">
-                <RouteGuard>
-                  <Header/>
-                  {children}
-                  <Footer/>
-                </RouteGuard>
-              </main>
-          </Providers>
-        </body>
-      </UserProvider>
+      <body className={inter.className}>
+        <Providers>
+            <main className="h-screen flex flex-col">
+              <RouteGuard>
+                <Header/>
+                {children}
+                <Footer/>
+              </RouteGuard>
+            </main>
+        </Providers>
+      </body>
     </html>
   )
 }
