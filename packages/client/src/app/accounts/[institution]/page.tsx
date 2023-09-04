@@ -25,8 +25,8 @@ export default function Account({ params }: { params: { institution: string } })
             <h1 className="p-4 my-6 mx-25% rounded-lg shadow font-bold bg-slate-300 text-center">{item.institution_name}</h1>
             <div className="flex flex-row mx-10%">
                 {
-                    item.accounts.map(account => (
-                        <div className="p-4 my-6 mx-4 rounded-lg shadow font-bold bg-slate-100 text-center basis-100%">
+                    item.accounts.map((account, index) => (
+                        <div key={index} className="p-4 my-6 mx-4 rounded-lg shadow font-bold bg-slate-100 text-center basis-100%">
                             <div className="p-4 my-6 mx-10% rounded-lg shadow flex justify-between bg-slate-300">
                                 <h1>{`${account.account_subtype.charAt(0).toUpperCase() + account.account_subtype.slice(1)} account`}</h1>
                                 <p>{`Current balance: ${account.balance} ${account.currency_code}`}</p>
@@ -42,8 +42,8 @@ export default function Account({ params }: { params: { institution: string } })
                                 </div>
                                 <div>
                                     {
-                                        account.transactions.map((transaction, index) => (
-                                            <div key={index} className="grid grid-cols-5 gap-1 px-6">
+                                        account.transactions.map((transaction, tIndex) => (
+                                            <div key={tIndex} className="grid grid-cols-5 gap-1 px-6">
                                                 <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
                                                     {transaction.payment_date}
                                                 </h4>

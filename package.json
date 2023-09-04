@@ -8,6 +8,5 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ],
-  "proxy": "http://localhost:5000"
+  ]
 }
