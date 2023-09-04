@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 }
 
 const initializeAccount = async (userBankData: UserBankData): Promise<AbstractedItem> => {
-    const output = await parseJSONReadableStream<AbstractedItem>(fetch('http://localhost:5000/AddBank', {
+    const output = await parseJSONReadableStream<AbstractedItem>(fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/AddBank', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

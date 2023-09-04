@@ -31,7 +31,7 @@ export default function Entry() {
 
     const handleRegister = async () => {
         if (emailRegex.test(email) && checkPassword()) {
-            const response = await fetch('http://localhost:5000/AddUser', {
+            const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/AddUser', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

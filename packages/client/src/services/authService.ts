@@ -4,7 +4,7 @@ import { AbstractedUser } from "@openbank/types";
 export class AuthService {
 
     login: (email: string, password: string) => Promise<AbstractedUser> = async (email: string, password: string) => {
-        const userResponse = await fetch('http://localhost:5000/GetUserId', {
+        const userResponse = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/GetUserId', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

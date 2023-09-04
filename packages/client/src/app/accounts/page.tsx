@@ -3,7 +3,6 @@
 import { selectItems } from "@/libs/redux/bank/bankSlice"
 import { useAppSelector } from "@/libs/redux/hooks"
 import { useEffect, useState } from "react";
-import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
 
 export default function Accounts() {
     
@@ -25,7 +24,8 @@ export default function Accounts() {
 
     interface TransactionCategories {
         name: string,
-        value: number
+        occurences: number,
+        totalSpent: number
     }
 
     useEffect(() => {
@@ -35,6 +35,7 @@ export default function Accounts() {
             let currency_code = items[0]?.accounts[0]?.currency_code || "";
             const itemFinancials: ItemFinancials[] = [];
             const transactionCategories: TransactionCategories[] = [];
+            const types: string[] = [];
 
             items.forEach((item, index) => {
                 itemFinancials[index] = { name: item.institution_name, balance: 0 };
@@ -44,11 +45,19 @@ export default function Accounts() {
 
                     account.transactions.forEach(transaction => {
                         transaction.transaction_type.split(",").forEach(type => {
-                            transactionCategories.forEach((category, index) => {
-                                if (category.name == type) {
-                                    transactionCategories[index].value++;
-                                }
-                            })
+
+                            if (types.includes(type)) {
+                                transactionCategories.forEach((category, index) => {
+                                    if (category.name == type) {
+                                        transactionCategories[index].occurences++;
+                                        transactionCategories[index].totalSpent += transaction.amount;
+                                    }
+                                })
+                            } else if (type != "") {
+                                types.push(type);
+                                transactionCategories.push({name: type, occurences:0, totalSpent:0});
+                            }
+                            
                         })
                     })
                 })
@@ -99,7 +108,7 @@ export default function Accounts() {
                     }
                 </div>
             </div>
-            <div className="p-8 flex flex-col w-100% text-center bg-slate-100">
+            <div className="p-8 flex flex-col justify-center w-100% text-center bg-slate-100">
                 <div className="flex flex-row w-100% justify-between px-20% mb-8">
                     <h1 className="ml-4 text-lg font-bold p-4 rounded-lg shadow bg-slate-300">{'Institutions Registered: ' + itemInfo.numInstitutions}</h1>
                     <h1 className="ml-4 text-lg font-bold p-4 rounded-lg shadow bg-slate-300">{'Total Balance: ' + itemInfo.balance + " " + itemInfo.currency_code}</h1>
@@ -118,19 +127,38 @@ export default function Accounts() {
                             </div>
                         ))
                     }
-                    <PieChart className="w-40 h-40">
-                        <Pie data={itemInfo.transactionCategories} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#8884d8">
-                            {
-                                itemInfo.transactionCategories.map((transactionCategory, index) => (
-                                    <Cell key={`cell-${index}`} fill="#8884d8"/>
-                                ))
-                            }
-                        </Pie>
-                        <Tooltip content={<h1>Test</h1>} />
-                        <Legend />
-                    </PieChart>
                 </div>
+
+                <div className="p-4 my-6 mx-4 rounded-lg shadow font-bold bg-slate-100 text-center basis-100%">
+                    <div>
+                        <h1>Transactions</h1>
+                        <div className="grid grid-cols-5 gap-1 px-6">
+                            <h1 className="font-semibold bg-slate-300">Category</h1>
+                            <h1 className="font-semibold bg-slate-300">Occurences</h1>
+                            <h1 className="font-semibold bg-slate-300">Total Amount Spent</h1>
+                        </div>
+                            {
+                                itemInfo.transactionCategories.map((category, index) => (
+                                    <div key={index} className="grid grid-cols-5 gap-1 px-6">
+                                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                                            {category.name}
+                                        </h4>
+                                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                                            {category.occurences}
+                                        </h4>
+                                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                                            {"$" + category.totalSpent}
+                                        </h4>
+                                    </div>
+                                )
+                            )}
+                    </div>
+                </div>
+
+                
+
             </div>
+            
         </div>
     )
 }

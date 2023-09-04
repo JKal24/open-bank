@@ -1,5 +1,5 @@
 export const retrieveAccessToken = async (publicToken: string) => {
-    const accessTokenRequest = await fetch('http://localhost:5000/GetAccessToken', {
+    const accessTokenRequest = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/GetAccessToken', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
