@@ -13,6 +13,6 @@ export async function checkIfUserExistsDb(email: string): Promise<boolean> {
 }
 
 export async function getUserDb(email: string, password: string): Promise<User> {
-    const results = (await query<User>("SELECT * FROM users WHERE email = ? AND pass = ?", [email]))[0];
+    const results = (await query<User>("SELECT * FROM users WHERE email = ? AND pass = ?", [email, password]))[0];
     return results;
 }

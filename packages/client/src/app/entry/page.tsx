@@ -3,11 +3,9 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/libs/redux/hooks';
 import { selectSignup, switchDefaultSignup } from '@/libs/redux/signup/signupSlice';
-import { parseReadableStream } from '@/libs/requests/stream';
 import { useRouter } from 'next/navigation';
+import { AuthService } from "@/services/authService";
 import { addUserId } from '@/libs/redux/user/userSlice';
-import { AbstractedUser } from '@openbank/types';
-import { useLogin } from '@/hooks/useLogin';
 
 export default function Entry() {
 
@@ -17,8 +15,7 @@ export default function Entry() {
     const [emailTakenError, setEmailTakenError] = useState(false);
     const [wrongLoginError, setWrongLoginError] = useState(false);
     const signUp = useAppSelector(selectSignup);
-
-    const { login } = useLogin()
+    const authService: AuthService = new AuthService();
 
     const router = useRouter();
 
@@ -60,21 +57,12 @@ export default function Entry() {
     }
 
     const handleLogin = async () => {
-        const userResponse = await fetch(process.env.SERVER_URL + '/GetUserId', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
-
-        if (userResponse.status === 401 || !userResponse.ok) {
-            setWrongLoginError(true);
+        const user = await authService.login(email, password);
+        if (user != null) {
+            dispatch(addUserId(user.user_id));
+            router.push("/summary");
         } else {
-            const abstractedUser: AbstractedUser = JSON.parse(await parseReadableStream(userResponse));
-            router.push("/summary")
-            dispatch(addUserId(abstractedUser.user_id));
+            setWrongLoginError(true);
         }
     }
 

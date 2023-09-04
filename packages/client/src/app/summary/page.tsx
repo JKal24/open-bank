@@ -4,17 +4,17 @@ import { useState, useEffect } from 'react';
 import {
     usePlaidLink
 } from 'react-plaid-link';
+import Link from 'next/link';
 import { useAppSelector, useAppDispatch } from '@/libs/redux/hooks';
-import { selectUserId } from '@/libs/redux/user/userSlice';
 import { selectItems, addItem } from '@/libs/redux/bank/bankSlice';
 import { AbstractedBank, AbstractedItem } from '@openbank/types';
 import { parseJSONReadableStream } from '@/libs/requests/stream';
-import Link from 'next/link';
+import { selectUserId } from '@/libs/redux/user/userSlice';
 
 export default function Dashboard() {
 
     const [linkToken, setLinkToken] = useState<string|null>(null);
-    const user_id: string = useAppSelector(selectUserId).user_id
+    const user_id: string = useAppSelector(selectUserId);
 
     const items = useAppSelector(selectItems);
     const [itemsIndex, setItemsIndex] = useState(0);
@@ -23,7 +23,7 @@ export default function Dashboard() {
     const dispatch = useAppDispatch();
 
     const createLinkToken = async () => {
-        const tokenResponse = await fetch(process.env.SERVER_URL + '/GetLinkToken');
+        const tokenResponse = await fetch('http://localhost:5000/GetLinkToken');
         const response = await tokenResponse.json();
         setLinkToken(response);
     }
@@ -140,10 +140,12 @@ export default function Dashboard() {
                                 <div className="font-normal text-gray-700 dark:text-gray-400 flex flex-row justify-evenly">
                                     {
                                         item.accounts.map((account, accountIndex) => (
-                                            <div key={accountIndex}>
-                                                <h1>{account.account_type}</h1>
-                                                <h3>{account.account_subtype}</h3>
-                                                <h5>{account.balance}</h5>
+                                            <div key={accountIndex} className="mx-2 bg-slate-100 rounded-lg p-2">
+                                                <h3 className="font-bold">{account.account_subtype.slice(0,1).toUpperCase()+account.account_subtype.slice(1) + " Account"}</h3>
+                                                <div className="flex flex-row justify-between">
+                                                    <h1>Balance</h1>
+                                                    <h5>${account.balance}</h5>
+                                                </div>
                                             </div>
                                         ))
                                     }

@@ -1,6 +1,6 @@
 'use client'
 
-import logo from '@/assets/header-logo.png'
+import logo from '@/assets/logo.png'
 import Link from 'next/link';
 import { useAppSelector } from '@/libs/redux/hooks';
 import { selectUserId } from '@/libs/redux/user/userSlice';
@@ -8,7 +8,7 @@ import { purge } from '@/libs/redux/store';
 
 export default function Header() {
 
-    const user_id: string = useAppSelector(selectUserId).user_id;
+    const user_id: string = useAppSelector(selectUserId);
 
     return (
         <div className='w-full py-2 h-fit bg-footer'>
@@ -16,12 +16,13 @@ export default function Header() {
                 user_id !== "" ? (
                     <div className="flex flex-row justify-between px-10">
                         <div className="flex flex-row mx-5">
-                            <img src={logo.src} className="rounded-full mr-6" />
+                            <a href="/summary">
+                                <img src={logo.src} className="rounded-full mr-6" />
+                            </a>
                             <div className="flex flex-col justify-center">
                                 <div className="flex flex-row space-x-6">
-                                    <Link href="/Accounts" className="">Accounts</Link>
-                                    <Link href="/Transactions" className="">Transactions</Link>
-                                    <Link href="/Services" className="">Services</Link>
+                                    <Link href="/accounts" className="">Accounts</Link>
+                                    <Link href="/summary" className="">Services</Link>
                                 </div>
                             </div>
                         </div>
@@ -31,7 +32,9 @@ export default function Header() {
                     </div>
                 ) : (
                     <div className='flex m-auto w-100% justify-between px-20%'>
-                        <a href="#"><img src={logo.src}/></a>
+                        <a href="/">
+                            <img src={logo.src} className="rounded-full mr-6" />
+                        </a>
                         <div className='table'> 
                             <Link className='font-bold align-bottom table-cell pr-3' href="#">About Us</Link>
                             <Link className='font-bold align-bottom table-cell' href="#">Resources</Link>

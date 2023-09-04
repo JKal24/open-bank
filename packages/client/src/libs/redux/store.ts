@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import bankReducer from '@/libs/redux/bank/bankSlice';
 import usersReducer from '@/libs/redux/user/userSlice'
 import signupReducer from "./signup/signupSlice";
@@ -10,12 +10,13 @@ const persistConfig = {
     storage,
 }
 
-const persistedReducer = persistReducer(persistConfig, usersReducer);
+const persistedUsersReducer = persistReducer(persistConfig, usersReducer);
+const persistedBankReducer = persistReducer(persistConfig, bankReducer);
 
 export const store = configureStore({
     reducer: {
-        bank: bankReducer,
-        users: persistedReducer,
+        bank: persistedBankReducer,
+        users: persistedUsersReducer,
         signup: signupReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

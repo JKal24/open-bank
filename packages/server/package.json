@@ -33,5 +33,6 @@
     "@types/mysql": "^2.15.21",
     "@types/node": "^20.4.4",
     "typescript": "^5.1.6"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

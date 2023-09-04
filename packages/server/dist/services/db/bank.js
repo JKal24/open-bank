@@ -12,6 +12,9 @@ export async function getItemsFromDb(user_id) {
     const items = (await query("SELECT * FROM items WHERE user_id = ?", [user_id]));
     return items;
 }
+export async function getAccessTokenFromDb(user_id) {
+    return (await query("SELECT access_token from items WHERE user_id = ?", [user_id]));
+}
 export async function getAccountsFromDb(item_id) {
     const accounts = (await query("SELECT * FROM accounts WHERE item_id = ?", [item_id]));
     return accounts;

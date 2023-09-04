@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
     const user_id: string = await request.json()
 
-    const bank: AbstractedBank = await parseJSONReadableStream<AbstractedBank>(fetch(process.env.SERVER_URL + '/GetBank', {
+    const bank: AbstractedBank = await parseJSONReadableStream<AbstractedBank>(fetch('http://localhost:5000/GetBank', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

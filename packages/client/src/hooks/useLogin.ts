@@ -8,7 +8,7 @@ export const useLogin = () => {
     const login = async (username: string, password: string) => {
         const user = await authService.login(username, password);
         if (user) {
-            Cookies.set("currentUser", JSON.stringify(user));
+            Cookies.set("user_id", user.user_id);
         }
         return user as AbstractedUser;
     };

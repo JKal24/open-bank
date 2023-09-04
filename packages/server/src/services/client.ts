@@ -15,7 +15,7 @@ const config = new Configuration({
             'PLAID-SECRET': SECRET,
             'Plaid-Version': '2020-09-14',
         },
-    },
+    }
 });
 
 export const client = new PlaidApi(config);

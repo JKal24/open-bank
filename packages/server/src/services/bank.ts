@@ -4,18 +4,6 @@ import { Item, Account, UserBankData, Transaction, AbstractedBank, AbstractedIte
 import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb } from './db/bank.js';
 import { AccountBase, Transaction as PlaidTransaction, TransactionsGetResponse } from 'plaid';
 
-export async function getAccount(access_token: string) {
-    return await client.accountsGet({access_token})
-}
-
-export async function getTransactions(access_token: string, startDate: string, endDate: string): Promise<TransactionsGetResponse> {
-    return (await client.transactionsGet({access_token, start_date: startDate, end_date: endDate})).data;
-}
-
-export async function getBalances(access_token: string) {
-    return await client.accountsBalanceGet({access_token})
-}
-
 export async function addBank(userBankData: UserBankData): Promise<AbstractedItem> {
     const endDate = getDate(0);
     const startDate = getDate(30);
@@ -25,6 +13,7 @@ export async function addBank(userBankData: UserBankData): Promise<AbstractedIte
     const item: Item = {
         user_id: userBankData.user_id,
         item_id: transactionItem.item_id,
+        access_token: userBankData.accessToken,
         institution_id: transactionItem.institution_id,
         institution_name: userBankData.institutionName,
     }
@@ -153,4 +142,16 @@ export async function getBank(user_id: string): Promise<AbstractedBank> {
     return {
         items: abstractedItems
     }
+}
+
+export async function getAccount(access_token: string) {
+    return await client.accountsGet({access_token})
+}
+
+export async function getTransactions(access_token: string, startDate: string, endDate: string): Promise<TransactionsGetResponse> {
+    return (await client.transactionsGet({access_token, start_date: startDate, end_date: endDate})).data;
+}
+
+export async function getBalances(access_token: string) {
+    return await client.accountsBalanceGet({access_token})
 }

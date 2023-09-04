@@ -1,15 +1,6 @@
 import { client } from './client.js';
 import { getDate } from '../utils/date.js';
 import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb } from './db/bank.js';
-export async function getAccount(access_token) {
-    return await client.accountsGet({ access_token });
-}
-export async function getTransactions(access_token, startDate, endDate) {
-    return (await client.transactionsGet({ access_token, start_date: startDate, end_date: endDate })).data;
-}
-export async function getBalances(access_token) {
-    return await client.accountsBalanceGet({ access_token });
-}
 export async function addBank(userBankData) {
     const endDate = getDate(0);
     const startDate = getDate(30);
@@ -18,6 +9,7 @@ export async function addBank(userBankData) {
     const item = {
         user_id: userBankData.user_id,
         item_id: transactionItem.item_id,
+        access_token: userBankData.accessToken,
         institution_id: transactionItem.institution_id,
         institution_name: userBankData.institutionName,
     };
@@ -126,5 +118,14 @@ export async function getBank(user_id) {
     return {
         items: abstractedItems
     };
+}
+export async function getAccount(access_token) {
+    return await client.accountsGet({ access_token });
+}
+export async function getTransactions(access_token, startDate, endDate) {
+    return (await client.transactionsGet({ access_token, start_date: startDate, end_date: endDate })).data;
+}
+export async function getBalances(access_token) {
+    return await client.accountsBalanceGet({ access_token });
 }
 //# sourceMappingURL=bank.js.map

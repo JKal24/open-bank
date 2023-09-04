@@ -18,6 +18,10 @@ export async function getItemsFromDb(user_id: string): Promise<Item[]> {
     return items;
 }
 
+export async function getAccessTokenFromDb(user_id: string): Promise<string> {
+    return (await query<string>("SELECT access_token from items WHERE user_id = ?", [user_id]));
+}
+
 export async function getAccountsFromDb(item_id: string): Promise<Account[]> {
     const accounts = (await query<Account[]>("SELECT * FROM accounts WHERE item_id = ?", [item_id]));
     return accounts;
