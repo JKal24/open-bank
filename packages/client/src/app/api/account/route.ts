@@ -1,5 +1,5 @@
 import { parseJSONReadableStream } from '@/libs/requests/stream';
-import { AbstractedBank } from '@openbank/types';
+import { AbstractedBank } from '@/types/banks';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {

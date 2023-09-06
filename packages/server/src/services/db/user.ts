@@ -1,4 +1,4 @@
-import { User } from '@openbank/types';
+import { User } from "../../types/users.js";
 import { query } from '../../data/database.js';
 
 export async function addUserDb(email: string, password: string) {

@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { addUserDb, checkIfUserExistsDb, getUserDb } from '../services/db/user.js';
+import { getUserDb } from '../services/db/user.js';
 import { addUniqueUser, createAbstractedUser } from '../services/user.js';
 
 export async function addUser(req, res) {

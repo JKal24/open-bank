@@ -1,5 +1,7 @@
 import { query } from '../../data/database.js';
-import { Account, Item, Transaction } from '@openbank/types'
+import { Account } from '../../types/accounts.js';
+import { Item } from '../../types/items.js';
+import { Transaction } from '../../types/transactions.js';
 
 export async function addItemToDB(item: Item, access_token: string) {
     await query("INSERT INTO items (item_id, access_token, user_id, institution_id, institution_name) VALUES (?, ?, ?, ?, ?)", [item.item_id, access_token, item.user_id, item.institution_id, item.institution_name]);

@@ -1,6 +1,6 @@
 import { AuthService } from "@/services/authService";
 import Cookies from "js-cookie";
-import { AbstractedUser } from "@openbank/types";
+import { AbstractedUser } from "@/types/users";
 
 const authService: AuthService = new AuthService();
 

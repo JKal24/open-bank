@@ -1,5 +1,5 @@
 import { getAccount, getTransactions, getBalances, addBank, getBank } from '../services/bank.js'
-import { UserBankData } from '@openbank/types';
+import { UserBankData } from '../types/users.js';
 
 export async function addNewBank(req, res, next) {
     try {

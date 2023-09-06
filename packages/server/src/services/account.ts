@@ -1,4 +1,4 @@
-import { TransferAuthorizationCreateResponse, TransferNetwork, TransferType } from "plaid";
+import { TransferNetwork, TransferType } from "plaid";
 import { client } from "./client.js";
 import { getItemsFromDb, getAccountsFromDb } from "./db/bank.js";
 

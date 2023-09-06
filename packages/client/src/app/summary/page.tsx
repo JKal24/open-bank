@@ -7,7 +7,8 @@ import {
 import Link from 'next/link';
 import { useAppSelector, useAppDispatch } from '@/libs/redux/hooks';
 import { selectItems, addItem } from '@/libs/redux/bank/bankSlice';
-import { AbstractedBank, AbstractedItem } from '@openbank/types';
+import { AbstractedBank } from '@/types/banks';
+import { AbstractedItem } from '@/types/items';
 import { parseJSONReadableStream } from '@/libs/requests/stream';
 import { selectUserId } from '@/libs/redux/user/userSlice';
 

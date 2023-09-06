@@ -1,6 +1,7 @@
 import { parseJSONReadableStream } from '@/libs/requests/stream';
 import { NextResponse } from 'next/server';
-import { AbstractedItem, UserBankData } from '@openbank/types';
+import { AbstractedItem } from '@/types/items';
+import { UserBankData } from '@/types/users';
 
 export async function POST(request: Request) {
     const body = await request.json()

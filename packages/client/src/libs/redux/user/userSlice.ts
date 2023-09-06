@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '@/libs/redux/store'
-import { AbstractedUser } from '@openbank/types';
+import { AbstractedUser } from '@/types/users';
 
 const initialState: AbstractedUser = { user_id: "", access_token: "" };
 

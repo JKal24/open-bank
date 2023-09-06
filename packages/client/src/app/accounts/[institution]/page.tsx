@@ -2,7 +2,7 @@
 
 import { selectItems } from '@/libs/redux/bank/bankSlice';
 import { useAppSelector } from '@/libs/redux/hooks';
-import { AbstractedItem } from '@openbank/types';
+import { AbstractedItem } from '@/types/items';
 import { useState, useEffect } from 'react';
 
 export default function Account({ params }: { params: { institution: string } }) {

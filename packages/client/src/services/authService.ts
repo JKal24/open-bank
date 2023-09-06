@@ -1,5 +1,5 @@
 import { parseReadableStream } from "@/libs/requests/stream";
-import { AbstractedUser } from "@openbank/types";
+import { AbstractedUser } from "@/types/users";
 
 export class AuthService {
 

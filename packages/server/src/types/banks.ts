@@ -1,4 +1,6 @@
-import { AbstractedItem, Account, Item, Transaction } from "."
+import { Account } from "./accounts.js";
+import { AbstractedItem, Item } from "./items.js";
+import { Transaction } from "./transactions.js";
 
 export interface Bank {
     item: Item,

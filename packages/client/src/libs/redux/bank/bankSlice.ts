@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '@/libs/redux/store'
-import { AbstractedBank, AbstractedItem } from '@openbank/types'
+import { AbstractedBank } from '@/types/banks'
+import { AbstractedItem } from '@/types/items'
 
 const initialState: AbstractedBank = {
     items: []

@@ -1,6 +1,10 @@
 import { client } from './client.js';
 import { getDate } from '../utils/date.js';
-import { Item, Account, UserBankData, Transaction, AbstractedBank, AbstractedItem, AbstractedAccount, AbstractedTransaction } from '@openbank/types';
+import { Item, AbstractedItem } from '../types/items.js';
+import { Account, AbstractedAccount } from '../types/accounts.js';
+import { Transaction, AbstractedTransaction } from '../types/transactions.js';
+import { UserBankData } from '../types/users.js';
+import { AbstractedBank } from '../types/banks.js';
 import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb } from './db/bank.js';
 import { AccountBase, Transaction as PlaidTransaction, TransactionsGetResponse } from 'plaid';
 

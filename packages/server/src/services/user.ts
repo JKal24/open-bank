@@ -1,4 +1,4 @@
-import { AbstractedUser, User } from '@openbank/types';
+import { AbstractedUser, User } from '../types/users.js'
 import jwt from 'jsonwebtoken';
 import { getUserDb, checkIfUserExistsDb } from './db/user.js';
 

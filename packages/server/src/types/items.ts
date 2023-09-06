@@ -1,4 +1,4 @@
-import { AbstractedAccount } from "."
+import { AbstractedAccount } from "./accounts.js"
 
 export interface Item {
     item_id: string,
