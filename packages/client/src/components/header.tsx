@@ -22,7 +22,8 @@ export default function Header() {
                             <div className="flex flex-col justify-center">
                                 <div className="flex flex-row space-x-6">
                                     <Link href="/accounts" className="">Accounts</Link>
-                                    <Link href="/summary" className="">Services</Link>
+                                    <Link href="/transactions" className="">Transactions</Link>
+                                    <Link href="/transfers" className="">Transfers</Link>
                                 </div>
                             </div>
                         </div>

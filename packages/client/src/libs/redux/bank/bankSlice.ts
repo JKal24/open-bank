@@ -16,6 +16,9 @@ export const bankSlice = createSlice({
             if (state.items.filter(item => item.institution_id == action.payload.institution_id).length == 0) {
                 state.items.push(action.payload);
             }
+        },
+        removeItem: (state, action: PayloadAction<string>) => {
+            state.items.filter(item => item.institution_name != action.payload);
         }
     }
 })

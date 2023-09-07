@@ -80,42 +80,6 @@ export default function Dashboard() {
         },
     });
 
-    interface TransactionalItem {
-        payment_date: string,
-        amount: number,
-        merchant_name: string,
-        payment_channel: string,
-        currency_code: string,
-        transaction_type: string,
-        institution_name: string,
-        account_type: string
-    }
-
-    const buildTransactionsItems = (items: AbstractedItem[]): TransactionalItem[] => {
-
-        const transactionalItems = items.flatMap(item => {
-
-            return item.accounts.flatMap(account => {
-                
-                return account.transactions.flatMap(transaction => {
-
-                    return {
-                        payment_date: transaction.payment_date,
-                        amount: transaction.amount,
-                        merchant_name: transaction.merchant_name||"N/A",
-                        payment_channel: transaction.payment_channel||"N/A",
-                        currency_code: transaction.currency_code,
-                        transaction_type: transaction.transaction_type||"N/A",
-                        institution_name: item.institution_name,
-                        account_type: account.account_subtype
-                    }
-                })
-            }) 
-        })
-        transactionalItems.sort((transaction1, transaction2) => Date.parse(transaction2.payment_date) - Date.parse(transaction1.payment_date))
-        return transactionalItems;
-    }
-
     return (
         <div className="w-100%">
             <div className="p-4 my-6 mx-25% rounded-lg shadow flex justify-between bg-slate-300">
@@ -164,47 +128,92 @@ export default function Dashboard() {
                     </button>
                 </div>
             </div>
-            <div className='mx-10% flex flex-col text-center pb-8'>
-                <h1 className="m-2 font-bold text-lg p-2 my-4 mx-40% rounded-lg shadow bg-slate-300">
-                    Recent Transactions
-                </h1>
-                <div className="grid grid-cols-7 gap-1 px-6">
-                    <h1 className="font-semibold bg-slate-300">Date</h1>
-                    <h1 className="font-semibold bg-slate-300">Amount</h1>
-                    <h1 className="font-semibold bg-slate-300">Merchant</h1>
-                    <h1 className="font-semibold bg-slate-300">Payment Type</h1>
-                    <h1 className="font-semibold bg-slate-300">Transaction Type</h1>
-                    <h1 className="font-semibold bg-slate-300">Institution</h1>
-                    <h1 className="font-semibold bg-slate-300">Account</h1>
-                </div>
-                {
-                    buildTransactionsItems(items).slice(0, 10).map((transactionalItem, index) => (
-                        <div key={index} className="grid grid-cols-7 gap-1 px-6">
-                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
-                                {transactionalItem.payment_date}
-                            </h4>
-                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
-                                {`${transactionalItem.amount} ${transactionalItem.currency_code}`}
-                            </h4>
-                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
-                                {transactionalItem.merchant_name}
-                            </h4>
-                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
-                                {transactionalItem.payment_channel}
-                            </h4>
-                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
-                                {transactionalItem.transaction_type}
-                            </h4>
-                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
-                                {transactionalItem.institution_name}
-                            </h4>
-                            <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
-                                {transactionalItem.account_type}
-                            </h4>
-                        </div>
-                    ))
-                }
-            </div>
+            <RecentTransactions items={items}/>
         </div>
     );
+}
+
+const RecentTransactions = (props: { items: AbstractedItem[] }) => {
+
+    const items = props.items;
+
+    interface TransactionalItem {
+        payment_date: string,
+        amount: number,
+        merchant_name: string,
+        payment_channel: string,
+        currency_code: string,
+        transaction_type: string,
+        institution_name: string,
+        account_type: string
+    }
+
+    const buildTransactionsItems = (items: AbstractedItem[]): TransactionalItem[] => {
+
+        const transactionalItems = items.flatMap(item => {
+
+            return item.accounts.flatMap(account => {
+                
+                return account.transactions.flatMap(transaction => {
+
+                    return {
+                        payment_date: transaction.payment_date,
+                        amount: transaction.amount,
+                        merchant_name: transaction.merchant_name||"N/A",
+                        payment_channel: transaction.payment_channel||"N/A",
+                        currency_code: transaction.currency_code,
+                        transaction_type: transaction.transaction_type||"N/A",
+                        institution_name: item.institution_name,
+                        account_type: account.account_subtype
+                    }
+                })
+            }) 
+        })
+        transactionalItems.sort((transaction1, transaction2) => Date.parse(transaction2.payment_date) - Date.parse(transaction1.payment_date))
+        return transactionalItems;
+    }
+
+    return (
+        <div className='mx-10% flex flex-col text-center pb-8'>
+            <h1 className="m-2 font-bold text-lg p-2 my-4 mx-40% rounded-lg shadow bg-slate-300">
+                Recent Transactions
+            </h1>
+            <div className="grid grid-cols-7 gap-1 px-6">
+                <h1 className="font-semibold bg-slate-300">Date</h1>
+                <h1 className="font-semibold bg-slate-300">Amount</h1>
+                <h1 className="font-semibold bg-slate-300">Merchant</h1>
+                <h1 className="font-semibold bg-slate-300">Payment Type</h1>
+                <h1 className="font-semibold bg-slate-300">Transaction Type</h1>
+                <h1 className="font-semibold bg-slate-300">Institution</h1>
+                <h1 className="font-semibold bg-slate-300">Account</h1>
+            </div>
+            {
+                buildTransactionsItems(items).slice(0, 10).map((transactionalItem, index) => (
+                    <div key={index} className="grid grid-cols-7 gap-1 px-6">
+                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                            {transactionalItem.payment_date}
+                        </h4>
+                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                            {`${transactionalItem.amount} ${transactionalItem.currency_code}`}
+                        </h4>
+                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                            {transactionalItem.merchant_name}
+                        </h4>
+                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                            {transactionalItem.payment_channel}
+                        </h4>
+                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                            {transactionalItem.transaction_type.replace(",", ", ")}
+                        </h4>
+                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                            {transactionalItem.institution_name}
+                        </h4>
+                        <h4 className="bg-slate-200 px-1 text-ellipsis overflow-hidden">
+                            {transactionalItem.account_type}
+                        </h4>
+                    </div>
+                ))
+            }
+        </div>
+    )
 }

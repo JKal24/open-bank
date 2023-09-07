@@ -8,12 +8,12 @@ export async function addAccountToDB(account) {
 export async function addTransactionToDB(transaction) {
     await query("INSERT INTO transactions (transaction_id, account_id, authorized_date, payment_date, amount, merchant_name, payment_channel, currency_code, transaction_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ", [transaction.transaction_id, transaction.account_id, transaction.authorized_date, transaction.payment_date, transaction.amount, transaction.merchant_name, transaction.payment_channel, transaction.currency_code, transaction.transaction_type]);
 }
+export async function getAccessTokenFromDb(institution_name, user_id) {
+    return (await query("SELECT access_token from items WHERE institution_name = ? AND user_id = ?", [institution_name, user_id]))[0].access_token;
+}
 export async function getItemsFromDb(user_id) {
     const items = (await query("SELECT * FROM items WHERE user_id = ?", [user_id]));
     return items;
-}
-export async function getAccessTokenFromDb(user_id) {
-    return (await query("SELECT access_token from items WHERE user_id = ?", [user_id]));
 }
 export async function getAccountsFromDb(item_id) {
     const accounts = (await query("SELECT * FROM accounts WHERE item_id = ?", [item_id]));

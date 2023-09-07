@@ -2,7 +2,7 @@ import { CountryCode, Products, DepositoryAccountSubtype, AccountsBalanceGetRequ
 import { client } from './client.js'
 
 const COUNTRY_CODES: CountryCode[] = [CountryCode.Ca, CountryCode.Us];
-const PRODUCTS = [Products.Auth, Products.Transactions, Products.Transfer];
+const PRODUCTS = [Products.Auth, Products.Transactions];
 const ACCOUNT_SUBTYPES = [DepositoryAccountSubtype.Checking, DepositoryAccountSubtype.Savings];
 const USER_ID = process.env.PLAID_USER || "user_good"
 

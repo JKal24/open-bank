@@ -2,7 +2,6 @@ import { TransferNetwork, TransferType } from "plaid";
 import { client } from "./client.js";
 import { getItemsFromDb, getAccountsFromDb } from "./db/bank.js";
 
-
 export async function transferRequest(user_id: string, institution_name_transferor: string, institution_name_transferee: string, account_id_transferor: string, account_id_transferee: string, 
     amount: number ) {
     const items = await getItemsFromDb(user_id);

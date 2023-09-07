@@ -1,4 +1,4 @@
-import { getAccount, getTransactions, getBalances, addBank, getBank } from '../services/bank.js'
+import { addBank, getBank, removeBank as removeBankService } from '../services/bank.js'
 import { UserBankData } from '../types/users.js';
 
 export async function addNewBank(req, res, next) {
@@ -9,6 +9,15 @@ export async function addNewBank(req, res, next) {
         res.json(output);
     } catch (err) {
         next(err);
+    }
+}
+
+export async function removeBank(req, res, next) {
+    try {
+        await removeBankService(req.body.institution_name, req.body.user_id);
+        res.status(200).send({status: "Removed account"});
+    } catch (err) {
+        next(err)
     }
 }
 

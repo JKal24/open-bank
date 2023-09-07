@@ -2,15 +2,21 @@
 
 import { selectItems } from '@/libs/redux/bank/bankSlice';
 import { useAppSelector } from '@/libs/redux/hooks';
+import { selectUserId } from '@/libs/redux/user/userSlice';
+import { parseJSONReadableStream, parseReadableStream } from '@/libs/requests/stream';
 import { AbstractedItem } from '@/types/items';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 export default function Account({ params }: { params: { institution: string } }) {
 
-    const items = useAppSelector(selectItems);
-
     const institution = decodeURI(params.institution);
+    const items = useAppSelector(selectItems);
+    const userId = useAppSelector(selectUserId);
+    const router = useRouter();
+
     const [item, setItem] = useState<AbstractedItem>({institution_id: "", institution_name: "", accounts: []});
+    const [couldNotRemoveError, setCouldNotRemoveErorr] = useState(false);
 
     useEffect(() => {
         items.forEach(item => {
@@ -20,9 +26,33 @@ export default function Account({ params }: { params: { institution: string } })
         })
     }, []);
 
+    const handleRemove = async () => {
+        const status = await parseReadableStream(await fetch('/api/account/remove', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({institution, user_id: userId})
+        }))
+        
+        if (status === '200') {
+            router.replace('/summary');
+        } else {
+            setCouldNotRemoveErorr(true);
+        }
+    }
+
     return (
         <div className="flex flex-col">
-            <h1 className="p-4 my-6 mx-25% rounded-lg shadow font-bold bg-slate-300 text-center">{item.institution_name}</h1>
+            <div className="p-4 my-6 mx-25% rounded-lg shadow font-bold bg-slate-300 text-center">
+                <h1>{item.institution_name}</h1>
+                <div className="flex flex-row justify-between">
+                    <h1 className="text-red-600 flex flex-col justify-end">{couldNotRemoveError ? "Unable to remove account!" : ""}</h1>
+                    <button className="bg-red-600 hover:bg-red-700 p-2 rounded-md font-bold" onClick={handleRemove}>Remove Bank</button>
+                </div>
+            </div>
+            
             <div className="flex flex-row mx-10%">
                 {
                     item.accounts.map((account, index) => (

@@ -5,7 +5,7 @@ import { Account, AbstractedAccount } from '../types/accounts.js';
 import { Transaction, AbstractedTransaction } from '../types/transactions.js';
 import { UserBankData } from '../types/users.js';
 import { AbstractedBank } from '../types/banks.js';
-import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb } from './db/bank.js';
+import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb, getAccessTokenFromDb, removeItemFromDb } from './db/bank.js';
 import { AccountBase, Transaction as PlaidTransaction, TransactionsGetResponse } from 'plaid';
 
 export async function addBank(userBankData: UserBankData): Promise<AbstractedItem> {
@@ -29,6 +29,12 @@ export async function addBank(userBankData: UserBankData): Promise<AbstractedIte
     const transactions: Transaction[] = await addTransactions(transactionInfo);
 
     return createAbstractedItem(item, accounts, transactions);
+}
+
+export async function removeBank(institution_name: string, user_id: number) {
+    const accessToken = await getAccessTokenFromDb(institution_name, user_id.toString());
+    await client.itemRemove({ access_token: accessToken });
+    await removeItemFromDb(accessToken);
 }
 
 function createAbstractedItem(item: Item, accounts: Account[], transactions: Transaction[]): AbstractedItem {
