@@ -23,4 +23,7 @@ export async function getTransactionsFromDb(account_id) {
     const transactions = (await query("SELECT * FROM transactions WHERE account_id = ?", [account_id]));
     return transactions;
 }
+export async function removeItemFromDb(access_token) {
+    await query("DELETE FROM items WHERE access_token = ?", [access_token]);
+}
 //# sourceMappingURL=bank.js.map

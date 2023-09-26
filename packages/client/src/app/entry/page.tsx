@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/libs/redux/hooks';
 import { selectSignup, switchDefaultSignup } from '@/libs/redux/signup/signupSlice';
 import { useRouter } from 'next/navigation';
-import { AuthService } from "@/services/authService";
-import { addUserId } from '@/libs/redux/user/userSlice';
+import { addUser } from '@/libs/redux/user/userSlice';
+import { parseJSONReadableStream } from '@/libs/requests/stream';
+import { AbstractedUser } from '@/types/users';
 
 export default function Entry() {
 
@@ -15,7 +16,6 @@ export default function Entry() {
     const [emailTakenError, setEmailTakenError] = useState(false);
     const [wrongLoginError, setWrongLoginError] = useState(false);
     const signUp = useAppSelector(selectSignup);
-    const authService: AuthService = new AuthService();
 
     const router = useRouter();
 
@@ -57,9 +57,17 @@ export default function Entry() {
     }
 
     const handleLogin = async () => {
-        const user = await authService.login(email, password);
+        const user = await parseJSONReadableStream<AbstractedUser>(fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        }));
+
         if (user != null) {
-            dispatch(addUserId(user.user_id));
+            dispatch(addUser(user));
             router.push("/summary");
         } else {
             setWrongLoginError(true);

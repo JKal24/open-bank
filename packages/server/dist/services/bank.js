@@ -1,6 +1,6 @@
 import { client } from './client.js';
 import { getDate } from '../utils/date.js';
-import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb, getAccessTokenFromDb } from './db/bank.js';
+import { addItemToDB, addAccountToDB, addTransactionToDB, getItemsFromDb, getAccountsFromDb, getTransactionsFromDb, getAccessTokenFromDb, removeItemFromDb } from './db/bank.js';
 export async function addBank(userBankData) {
     const endDate = getDate(0);
     const startDate = getDate(30);
@@ -21,6 +21,7 @@ export async function addBank(userBankData) {
 export async function removeBank(institution_name, user_id) {
     const accessToken = await getAccessTokenFromDb(institution_name, user_id.toString());
     await client.itemRemove({ access_token: accessToken });
+    await removeItemFromDb(accessToken);
 }
 function createAbstractedItem(item, accounts, transactions) {
     const abstractedItem = {

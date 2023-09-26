@@ -3,17 +3,33 @@
 import logo from '@/assets/logo.png'
 import Link from 'next/link';
 import { useAppSelector } from '@/libs/redux/hooks';
-import { selectUserId } from '@/libs/redux/user/userSlice';
+import { selectUserToken } from '@/libs/redux/user/userSlice';
 import { purge } from '@/libs/redux/store';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
 
-    const user_id: string = useAppSelector(selectUserId);
+    const [loggedIn, setLoggedIn] = useState(false);
+    const user_token: string = useAppSelector(selectUserToken);
+    const url = usePathname()
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const publicPaths = ['/entry', '/', '/auth'];
+        const path = url.split('?')[0];
+
+        if (user_token != "" && !publicPaths.includes(path)) {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
+    }, [url, searchParams])
 
     return (
-        <div className='w-full py-2 h-fit bg-footer'>
+        <div className='w-full py-4 h-fit bg-footer'>
             {
-                user_id !== "" ? (
+                loggedIn ? (
                     <div className="flex flex-row justify-between px-10">
                         <div className="flex flex-row mx-5">
                             <a href="/summary">
