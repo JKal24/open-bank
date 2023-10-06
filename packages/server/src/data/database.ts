@@ -3,7 +3,7 @@ import { createPool } from 'mysql';
 var database = createPool({
     host     : 'localhost',
     user     : 'root',
-    password : 'root',
+    password : '',
     database : 'openbank'
 });
 

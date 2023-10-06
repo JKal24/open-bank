@@ -223,11 +223,10 @@
     tailwindcss "3.3.3"
     typescript "5.1.6"
 
-"@openbank/server@^1.0.0", "@openbank/server@file:F:\\Projects\\open-bank\\packages\\server":
+"@openbank/server@file:F:\\Projects\\open-bank\\packages\\server":
   version "1.0.0"
   resolved "file:packages/server"
   dependencies:
-    "@openbank/types" "1.0.0"
     "@types/express-session" "^1.17.7"
     axios "^1.4.0"
     cors "^2.8.5"
@@ -239,12 +238,6 @@
     nodemon "^3.0.1"
     plaid "^15.0.0"
     ts-node "^10.9.1"
-
-"@openbank/types@^1.0.0", "@openbank/types@1.0.0", "@openbank/types@file:F:\\Projects\\open-bank\\packages\\types":
-  version "1.0.0"
-  resolved "file:packages/types"
-  dependencies:
-    "@openbank/server" "^1.0.0"
 
 "@panva/hkdf@^1.0.2":
   version "1.1.1"
